@@ -1,0 +1,9 @@
+# raw HC3 data: download with  python scripts/download_data.py
+data/
+# local safety copy of the midterm results (not needed to run anything)
+backup_midterm/
+# logs of long runs
+reports/final/cache/*.log
+# Python / Jupyter
+__pycache__/
+.ipynb_checkpoints/

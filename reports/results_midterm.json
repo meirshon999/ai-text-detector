@@ -1,0 +1,144 @@
+{
+  "results": {
+    "Length only (LogReg)": {
+      "accuracy": 0.7515967153284672,
+      "f1": 0.7705919528123025,
+      "roc_auc": 0.7657732872356011,
+      "tpr_at_1fpr": 0.0004562043795620438
+    },
+    "TF-IDF + LogReg \u2014 RAW text": {
+      "accuracy": 0.9881386861313869,
+      "f1": 0.9881006864988559,
+      "roc_auc": 0.9993712621210507,
+      "tpr_at_1fpr": 0.9867700729927007
+    },
+    "TF-IDF + LogReg \u2014 CLEANED text": {
+      "accuracy": 0.9874543795620438,
+      "f1": 0.9874228218614224,
+      "roc_auc": 0.9991013273216474,
+      "tpr_at_1fpr": 0.9844890510948905
+    },
+    "PyTorch bag-of-embeddings \u2014 CLEANED": {
+      "accuracy": 0.9532390510948905,
+      "f1": 0.9532283823864933,
+      "roc_auc": 0.9903415580545047,
+      "tpr_at_1fpr": 0.7915145985401459
+    },
+    "GPT-2 perplexity (zero-shot)": {
+      "accuracy": 0.95375,
+      "f1": 0.9531051964512041,
+      "roc_auc": 0.9912000000000001,
+      "tpr_at_1fpr": 0.7875
+    }
+  },
+  "cross_domain": [
+    {
+      "domain": "finance",
+      "F1 seen in training": 0.994,
+      "F1 unseen domain": 0.977,
+      "drop": 0.017
+    },
+    {
+      "domain": "medicine",
+      "F1 seen in training": 1.0,
+      "F1 unseen domain": 0.993,
+      "drop": 0.007
+    },
+    {
+      "domain": "open_qa",
+      "F1 seen in training": 0.939,
+      "F1 unseen domain": 0.849,
+      "drop": 0.09
+    },
+    {
+      "domain": "reddit_eli5",
+      "F1 seen in training": 0.991,
+      "F1 unseen domain": 0.86,
+      "drop": 0.131
+    },
+    {
+      "domain": "wiki_csai",
+      "F1 seen in training": 0.955,
+      "F1 unseen domain": 0.875,
+      "drop": 0.08
+    }
+  ],
+  "n_pairs": 21913,
+  "split_sizes": {
+    "train": 35060,
+    "test": 4384,
+    "val": 4382
+  },
+  "ppl_median": {
+    "chatgpt": 10.4,
+    "human": 39.3
+  },
+  "pytorch_history": [
+    [
+      1,
+      0.2592899850264183,
+      0.9851227408253466
+    ],
+    [
+      2,
+      0.09887756568853065,
+      0.9884977151247969
+    ],
+    [
+      3,
+      0.052082905362010073,
+      0.9886394717529347
+    ],
+    [
+      4,
+      0.02690581936480587,
+      0.9879868288198621
+    ],
+    [
+      5,
+      0.012580073357568906,
+      0.9876210321424042
+    ],
+    [
+      6,
+      0.007115002699008799,
+      0.9866853967342021
+    ]
+  ],
+  "cleaning_protocol": [
+    [
+      "Original HC3 (English)",
+      85449
+    ],
+    [
+      "1. Remove empty answers",
+      85431
+    ],
+    [
+      "2. Remove ChatGPT server error messages",
+      85331
+    ],
+    [
+      "3. Normalise formatting (no rows removed)",
+      85331
+    ],
+    [
+      "4. Remove answers shorter than 5 words",
+      85316
+    ],
+    [
+      "5. Remove exact duplicates (after normalisation)",
+      79304
+    ],
+    [
+      "6. Keep 1 human + 1 ChatGPT answer per question (balanced pairs)",
+      43826
+    ]
+  ],
+  "rule_accuracy": {
+    "raw": 0.91835216382528,
+    "cleaned": 0.33071471804700897
+  },
+  "vocab_size": 30000,
+  "ppl_threshold": 16.093943450171686
+}

@@ -1,0 +1,18 @@
+{
+  "ppl": {
+    "column": "log_ppl",
+    "sign": -1.0,
+    "coef": 6.625304222106934,
+    "intercept": 19.154794692993164,
+    "raw_threshold": 2.891157002131094,
+    "perplexity_threshold": 18.014139947158156
+  },
+  "fdg": {
+    "column": "fast_detectgpt",
+    "sign": 1.0,
+    "coef": 2.9984686374664307,
+    "intercept": -6.5742597579956055,
+    "raw_threshold": 2.1925391100807228
+  },
+  "max_tokens": 128
+}

@@ -1,0 +1,40 @@
+[  0.5 min] data: train 35046, validation 4380, test 4380 texts
+[  0.9 min] audit done: {"same_question_id_in_train_and_test": 0, "same_question_id_in_train_and_val": 0, "same_question_text_in_train_and_test": 1, "identical_texts_in_train_and_test": 0, "identical_texts_in_train_and_val": 0, "test_texts_with_near_duplicate_in_train_cos_ge_0.9": 1, "test_texts_with_near_duplicate_in_train_cos_ge_0.8": 5}
+[  1.0 min] bias: shortcut rule done
+[  4.3 min] bias: stress test done for Character n-grams (sees spaces)
+[  5.5 min] bias: stress test done for Word n-grams (our TF-IDF)
+[  6.4 min] bias: URL placeholder ablation done
+[  6.4 min] computing stylometric features for all texts...
+[  7.0 min] length baseline done
+[  7.2 min] TF-IDF ngram=(1, 1) C=1.0: val F1 0.9681
+[  7.2 min] TF-IDF ngram=(1, 1) C=4.0: val F1 0.9714
+[  7.2 min] TF-IDF ngram=(1, 1) C=16.0: val F1 0.9726
+[  7.9 min] TF-IDF ngram=(1, 2) C=1.0: val F1 0.9816
+[  7.9 min] TF-IDF ngram=(1, 2) C=4.0: val F1 0.9872
+[  7.9 min] TF-IDF ngram=(1, 2) C=16.0: val F1 0.9895
+[  9.3 min] stylometry done (features: 18 + 2 extra features, min_samples_leaf=1)
+    epoch 1: train loss 0.2630  val loss 0.1722  val AUC 0.9841
+    epoch 2: train loss 0.1008  val loss 0.1417  val AUC 0.9881
+    epoch 3: train loss 0.0537  val loss 0.1440  val AUC 0.9888
+    epoch 4: train loss 0.0278  val loss 0.1776  val AUC 0.9878
+[ 10.3 min] neural network done (best epoch 2)
+[ 10.6 min] zero-shot GPT-2 detectors done
+[ 12.1 min] LODO: held-out domain finance done
+[ 13.8 min] LODO: held-out domain medicine done
+[ 15.4 min] LODO: held-out domain open_qa done
+[ 16.2 min] LODO: held-out domain reddit_eli5 done
+[ 17.8 min] LODO: held-out domain wiki_csai done
+[ 18.4 min] test metrics and bootstrap CIs done
+[ 18.6 min] figures done
+[ 18.6 min] saved C:\Users\meirb\Downloads\Pingwin DB\AI Essentials\ai-text-detector\reports\final\results.json and results_table.md
+
+| Model | Accuracy | Precision | Recall | F1 [95% CI] | ROC-AUC | FPR (humans flagged) | TPR @ 1% FPR |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| TF-IDF + LogReg | 0.989 | 0.991 | 0.987 | 0.989 [0.986–0.992] | 0.999 | 0.009 | 0.988 |
+| GPT-2 perplexity (zero-shot) | 0.958 | 0.953 | 0.963 | 0.958 [0.953–0.964] | 0.990 | 0.047 | 0.791 |
+| Fast-DetectGPT on GPT-2 (zero-shot) | 0.957 | 0.956 | 0.957 | 0.957 [0.951–0.962] | 0.991 | 0.044 | 0.877 |
+| PyTorch bag-of-embeddings | 0.953 | 0.957 | 0.947 | 0.952 [0.946–0.958] | 0.990 | 0.042 | 0.779 |
+| Stylometry + Random Forest | 0.935 | 0.944 | 0.925 | 0.934 [0.927–0.941] | 0.983 | 0.055 | 0.718 |
+| Stylometry + LogReg | 0.890 | 0.895 | 0.884 | 0.889 [0.880–0.898] | 0.953 | 0.104 | 0.431 |
+| Length baseline | 0.752 | 0.716 | 0.835 | 0.771 [0.761–0.782] | 0.766 | 0.331 | 0.000 |
+[ 18.6 min] all done

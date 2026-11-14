@@ -1,0 +1,86 @@
+{
+  "n_words": {
+    "human_median": 78.0,
+    "chatgpt_median": 181.0
+  },
+  "mean_sentence_len": {
+    "human_median": 17.4,
+    "chatgpt_median": 22.5
+  },
+  "burstiness (sentence-len std)": {
+    "human_median": 6.849493087488705,
+    "chatgpt_median": 6.729335079878543
+  },
+  "MATTR (vocabulary richness)": {
+    "human_median": 0.81,
+    "chatgpt_median": 0.7533333333333333
+  },
+  "mean_word_len": {
+    "human_median": 4.523255813953488,
+    "chatgpt_median": 4.638655462184874
+  },
+  "long_words_% (7+ letters)": {
+    "human_median": 20.0,
+    "chatgpt_median": 22.82608695652174
+  },
+  "exclamation !": {
+    "human_median": 0.0,
+    "chatgpt_median": 0.0
+  },
+  "question ?": {
+    "human_median": 0.0,
+    "chatgpt_median": 0.0
+  },
+  "ellipsis ...": {
+    "human_median": 0.0,
+    "chatgpt_median": 0.0
+  },
+  "brackets ( [": {
+    "human_median": 0.0,
+    "chatgpt_median": 0.0
+  },
+  "quotes \"": {
+    "human_median": 0.0,
+    "chatgpt_median": 0.0
+  },
+  "commas ,": {
+    "human_median": 4.166666666666667,
+    "chatgpt_median": 4.624277456647399
+  },
+  "connectives": {
+    "human_median": 0.0,
+    "chatgpt_median": 0.6451612903225806
+  },
+  "first person I": {
+    "human_median": 0.0,
+    "chatgpt_median": 0.0
+  },
+  "second person you": {
+    "human_median": 1.1086474501108647,
+    "chatgpt_median": 0.3225806451612903
+  },
+  "hedges": {
+    "human_median": 0.0,
+    "chatgpt_median": 0.0
+  },
+  "informal/slang": {
+    "human_median": 0.0,
+    "chatgpt_median": 0.0
+  },
+  "contractions": {
+    "human_median": 1.0526315789473684,
+    "chatgpt_median": 0.5102040816326531
+  },
+  "function words %": {
+    "human_median": 52.29357798165138,
+    "chatgpt_median": 53.409090909090914
+  },
+  "readability (Flesch)": {
+    "human_median": 61.27062937062939,
+    "chatgpt_median": 51.61443877551022
+  },
+  "repeated bigrams %": {
+    "human_median": 3.6666666666666665,
+    "chatgpt_median": 14.788732394366196
+  }
+}

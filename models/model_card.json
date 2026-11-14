@@ -1,0 +1,145 @@
+{
+  "length": {
+    "name": "Length baseline",
+    "f1": 0.771079258010118,
+    "f1_ci": [
+      0.7607669349725078,
+      0.781524427065115
+    ],
+    "accuracy": 0.7520547945205479,
+    "roc_auc": 0.7664083317695628,
+    "false_positive_rate": 0.3310502283105023,
+    "mean_unseen_domain_f1": 0.7256702464243137,
+    "n_test": 4380
+  },
+  "tfidf": {
+    "name": "TF-IDF + LogReg",
+    "f1": 0.9890160183066361,
+    "f1_ci": [
+      0.9858318098720292,
+      0.991996432654928
+    ],
+    "accuracy": 0.989041095890411,
+    "roc_auc": 0.999268363878985,
+    "false_positive_rate": 0.008675799086757991,
+    "mean_unseen_domain_f1": 0.9110010759818656,
+    "n_test": 4380
+  },
+  "style_rf": {
+    "name": "Stylometry + Random Forest",
+    "f1": 0.9342560553633218,
+    "f1_ci": [
+      0.9265916895593445,
+      0.9413971333422929
+    ],
+    "accuracy": 0.934931506849315,
+    "roc_auc": 0.9825640624674215,
+    "false_positive_rate": 0.0547945205479452,
+    "mean_unseen_domain_f1": 0.8750455916674689,
+    "n_test": 4380
+  },
+  "style_lr": {
+    "name": "Stylometry + LogReg",
+    "f1": 0.8890420399724328,
+    "f1_ci": [
+      0.8797061100287313,
+      0.8980936032591008
+    ],
+    "accuracy": 0.8897260273972603,
+    "roc_auc": 0.9525180876128522,
+    "false_positive_rate": 0.10410958904109589,
+    "mean_unseen_domain_f1": 0.839452958063136,
+    "n_test": 4380
+  },
+  "nn": {
+    "name": "PyTorch bag-of-embeddings",
+    "f1": 0.9522716842588343,
+    "f1_ci": [
+      0.9459100278106252,
+      0.9582218954680989
+    ],
+    "accuracy": 0.9525114155251142,
+    "roc_auc": 0.9898323637955838,
+    "false_positive_rate": 0.04246575342465753,
+    "mean_unseen_domain_f1": 0.8567062853980282,
+    "n_test": 4380
+  },
+  "ppl": {
+    "name": "GPT-2 perplexity (zero-shot)",
+    "f1": 0.957983193277311,
+    "f1_ci": [
+      0.9525080297661167,
+      0.9637899817119666
+    ],
+    "accuracy": 0.9577625570776256,
+    "roc_auc": 0.9897176872875878,
+    "false_positive_rate": 0.047488584474885846,
+    "mean_unseen_domain_f1": 0.9472226779433118,
+    "n_test": 4380
+  },
+  "fdg": {
+    "name": "Fast-DetectGPT on GPT-2 (zero-shot)",
+    "f1": 0.9566408032861707,
+    "f1_ci": [
+      0.9505127737093986,
+      0.9623248646997763
+    ],
+    "accuracy": 0.95662100456621,
+    "roc_auc": 0.9911805425241342,
+    "false_positive_rate": 0.043835616438356165,
+    "mean_unseen_domain_f1": 0.9381018296256821,
+    "n_test": 4380
+  },
+  "roberta_full": {
+    "name": "DistilRoBERTa full fine-tuning",
+    "f1": 0.9860045146726862,
+    "f1_ci": [
+      0.9824480472585755,
+      0.9893594140354366
+    ],
+    "accuracy": 0.9858447488584475,
+    "roc_auc": 0.9991434707366402,
+    "false_positive_rate": 0.025570776255707764,
+    "mean_unseen_domain_f1": null,
+    "n_test": 4380
+  },
+  "roberta_lora": {
+    "name": "DistilRoBERTa + LoRA",
+    "f1": 0.9899589228662711,
+    "f1_ci": [
+      0.9872374847463748,
+      0.9926908097982649
+    ],
+    "accuracy": 0.9899543378995433,
+    "roc_auc": 0.9995600592147788,
+    "false_positive_rate": 0.010502283105022832,
+    "mean_unseen_domain_f1": 0.9796200345423144,
+    "n_test": 4380
+  },
+  "roberta_full_raw": {
+    "name": "DistilRoBERTa full FT, raw 0.5",
+    "f1": 0.9643014543851918,
+    "f1_ci": [
+      0.9589787804496716,
+      0.9692453302957255
+    ],
+    "accuracy": 0.963013698630137,
+    "roc_auc": 0.9991434707366402,
+    "false_positive_rate": 0.0730593607305936,
+    "mean_unseen_domain_f1": null,
+    "n_test": 4380
+  },
+  "roberta_lora_raw": {
+    "name": "DistilRoBERTa + LoRA, raw 0.5",
+    "f1": 0.9469811729062974,
+    "f1_ci": [
+      0.9407946827871673,
+      0.9527541911604616
+    ],
+    "accuracy": 0.9440639269406392,
+    "roc_auc": 0.9995600592147788,
+    "false_positive_rate": 0.11095890410958904,
+    "mean_unseen_domain_f1": null,
+    "n_test": 4380
+  }
+}

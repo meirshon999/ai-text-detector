@@ -1,0 +1,16 @@
+[theme]
+base = "light"
+primaryColor = "#4a3aa7"
+backgroundColor = "#fcfcfb"
+secondaryBackgroundColor = "#f3f2ee"
+textColor = "#0b0b0b"
+
+[server]
+headless = true
+address = "localhost"      # only this computer can open the demo
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"

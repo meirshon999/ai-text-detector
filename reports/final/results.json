@@ -1,0 +1,2401 @@
+{
+  "meta": {
+    "created": "2026-11-13 23:33",
+    "seed": 42,
+    "python": "3.14.7",
+    "sklearn": "1.9.1",
+    "torch": "2.13.0+cpu",
+    "pandas": "3.0.5",
+    "n_test": 4380,
+    "positive_class": "ChatGPT",
+    "threshold": 0.5
+  },
+  "cleaning_protocol": [
+    [
+      "Original HC3 (English)",
+      85449
+    ],
+    [
+      "1. Remove empty answers",
+      85431
+    ],
+    [
+      "2. Remove ChatGPT server error messages",
+      85331
+    ],
+    [
+      "3. Normalise formatting (no rows removed)",
+      85331
+    ],
+    [
+      "4. Remove answers shorter than 5 words",
+      85316
+    ],
+    [
+      "5. Remove exact duplicates (after normalisation)",
+      79304
+    ],
+    [
+      "6. Keep 1 human + 1 ChatGPT answer per question (balanced pairs)",
+      43826
+    ],
+    [
+      "7. Remove pairs with a saved Cloudflare page instead of an answer (final audit)",
+      43806
+    ]
+  ],
+  "audit": {
+    "class_balance_chatgpt_share": {
+      "test": 0.5,
+      "train": 0.5,
+      "val": 0.5
+    },
+    "split_sizes": {
+      "train": 35046,
+      "test": 4380,
+      "val": 4380
+    },
+    "questions_per_split": {
+      "test": 2190,
+      "train": 17523,
+      "val": 2190
+    },
+    "texts_per_domain_and_split": {
+      "test": {
+        "finance": 770,
+        "medicine": 236,
+        "open_qa": 272,
+        "reddit_eli5": 2948,
+        "wiki_csai": 154
+      },
+      "train": {
+        "finance": 6286,
+        "medicine": 1948,
+        "open_qa": 1838,
+        "reddit_eli5": 23740,
+        "wiki_csai": 1234
+      },
+      "val": {
+        "finance": 746,
+        "medicine": 278,
+        "open_qa": 228,
+        "reddit_eli5": 2976,
+        "wiki_csai": 152
+      }
+    },
+    "same_question_id_in_train_and_test": 0,
+    "same_question_id_in_train_and_val": 0,
+    "same_question_text_in_train_and_test": 1,
+    "identical_texts_in_train_and_test": 0,
+    "identical_texts_in_train_and_val": 0,
+    "test_texts_with_near_duplicate_in_train_cos_ge_0.9": 1,
+    "test_texts_with_near_duplicate_in_train_cos_ge_0.8": 5,
+    "n_test_texts": 4380
+  },
+  "tuning": {
+    "tfidf": {
+      "grid": [
+        {
+          "ngram_range": [
+            1,
+            1
+          ],
+          "C": 1.0,
+          "val_f1": 0.9681119522826336,
+          "val_roc_auc": 0.994894184858531
+        },
+        {
+          "ngram_range": [
+            1,
+            1
+          ],
+          "C": 4.0,
+          "val_f1": 0.9714155042305054,
+          "val_roc_auc": 0.9960515835783241
+        },
+        {
+          "ngram_range": [
+            1,
+            1
+          ],
+          "C": 16.0,
+          "val_f1": 0.9726152441807394,
+          "val_roc_auc": 0.9961328996476304
+        },
+        {
+          "ngram_range": [
+            1,
+            2
+          ],
+          "C": 1.0,
+          "val_f1": 0.9816260909508497,
+          "val_roc_auc": 0.9979917015908759
+        },
+        {
+          "ngram_range": [
+            1,
+            2
+          ],
+          "C": 4.0,
+          "val_f1": 0.9871736142922584,
+          "val_roc_auc": 0.998818206459415
+        },
+        {
+          "ngram_range": [
+            1,
+            2
+          ],
+          "C": 16.0,
+          "val_f1": 0.9894688644688645,
+          "val_roc_auc": 0.9991111528116594
+        }
+      ],
+      "chosen": {
+        "ngram_range": [
+          1,
+          2
+        ],
+        "C": 16.0,
+        "val_f1": 0.9894688644688645,
+        "val_roc_auc": 0.9991111528116594
+      }
+    },
+    "style_rf": {
+      "grid": [
+        {
+          "feature_set": "18 base features",
+          "min_samples_leaf": 1,
+          "val_f1": 0.9206637872243691,
+          "val_roc_auc": 0.9722455745293049
+        },
+        {
+          "feature_set": "18 base features",
+          "min_samples_leaf": 3,
+          "val_f1": 0.9169691470054446,
+          "val_roc_auc": 0.9721269364692146
+        },
+        {
+          "feature_set": "18 base features",
+          "min_samples_leaf": 5,
+          "val_f1": 0.912718204488778,
+          "val_roc_auc": 0.9710414711953461
+        },
+        {
+          "feature_set": "18 + 2 extra features",
+          "min_samples_leaf": 1,
+          "val_f1": 0.9311852704257767,
+          "val_roc_auc": 0.981847230041075
+        },
+        {
+          "feature_set": "18 + 2 extra features",
+          "min_samples_leaf": 3,
+          "val_f1": 0.9288510246373475,
+          "val_roc_auc": 0.9811144471549801
+        },
+        {
+          "feature_set": "18 + 2 extra features",
+          "min_samples_leaf": 5,
+          "val_f1": 0.9277496548550391,
+          "val_roc_auc": 0.9806252997226913
+        }
+      ],
+      "chosen": {
+        "feature_set": "18 + 2 extra features",
+        "min_samples_leaf": 1,
+        "val_f1": 0.9311852704257767,
+        "val_roc_auc": 0.981847230041075
+      },
+      "features": [
+        "mean_sentence_len",
+        "burstiness (sentence-len std)",
+        "MATTR (vocabulary richness)",
+        "mean_word_len",
+        "long_words_% (7+ letters)",
+        "exclamation !",
+        "question ?",
+        "ellipsis ...",
+        "brackets ( [",
+        "quotes \"",
+        "commas ,",
+        "connectives",
+        "first person I",
+        "second person you",
+        "hedges",
+        "informal/slang",
+        "contractions",
+        "function words %",
+        "readability (Flesch)",
+        "repeated bigrams %"
+      ]
+    }
+  },
+  "test_results": {
+    "Length baseline": {
+      "n": 4380,
+      "threshold": 0.5,
+      "accuracy": 0.7520547945205479,
+      "precision": 0.7161315583398591,
+      "recall": 0.8351598173515982,
+      "f1": 0.771079258010118,
+      "roc_auc": 0.7664083317695628,
+      "tpr_at_1fpr": 0.00045662100456621003,
+      "false_positive_rate": 0.3310502283105023,
+      "confusion_matrix": [
+        [
+          1465,
+          725
+        ],
+        [
+          361,
+          1829
+        ]
+      ],
+      "f1_ci": [
+        0.7607669349725078,
+        0.781524427065115
+      ],
+      "accuracy_ci": [
+        0.7406392694063927,
+        0.7637100456621005
+      ],
+      "roc_auc_ci": [
+        0.752011767373491,
+        0.7809586617251517
+      ]
+    },
+    "TF-IDF + LogReg": {
+      "n": 4380,
+      "threshold": 0.5,
+      "accuracy": 0.989041095890411,
+      "precision": 0.9912844036697248,
+      "recall": 0.9867579908675799,
+      "f1": 0.9890160183066361,
+      "roc_auc": 0.999268363878985,
+      "tpr_at_1fpr": 0.9876712328767123,
+      "false_positive_rate": 0.008675799086757991,
+      "confusion_matrix": [
+        [
+          2171,
+          19
+        ],
+        [
+          29,
+          2161
+        ]
+      ],
+      "f1_ci": [
+        0.9858318098720292,
+        0.991996432654928
+      ],
+      "accuracy_ci": [
+        0.9858447488584475,
+        0.9920091324200914
+      ],
+      "roc_auc_ci": [
+        0.998913189883447,
+        0.9995845739246472
+      ]
+    },
+    "Stylometry + Random Forest": {
+      "n": 4380,
+      "threshold": 0.5,
+      "accuracy": 0.934931506849315,
+      "precision": 0.9440559440559441,
+      "recall": 0.9246575342465754,
+      "f1": 0.9342560553633218,
+      "roc_auc": 0.9825640624674215,
+      "tpr_at_1fpr": 0.7178082191780822,
+      "false_positive_rate": 0.0547945205479452,
+      "confusion_matrix": [
+        [
+          2070,
+          120
+        ],
+        [
+          165,
+          2025
+        ]
+      ],
+      "f1_ci": [
+        0.9265916895593445,
+        0.9413971333422929
+      ],
+      "accuracy_ci": [
+        0.9276198630136987,
+        0.9420148401826484
+      ],
+      "roc_auc_ci": [
+        0.9795821526865578,
+        0.9856378359500428
+      ]
+    },
+    "Stylometry + LogReg": {
+      "n": 4380,
+      "threshold": 0.5,
+      "accuracy": 0.8897260273972603,
+      "precision": 0.8945908460471568,
+      "recall": 0.8835616438356164,
+      "f1": 0.8890420399724328,
+      "roc_auc": 0.9525180876128522,
+      "tpr_at_1fpr": 0.4305936073059361,
+      "false_positive_rate": 0.10410958904109589,
+      "confusion_matrix": [
+        [
+          1962,
+          228
+        ],
+        [
+          255,
+          1935
+        ]
+      ],
+      "f1_ci": [
+        0.8797061100287313,
+        0.8980936032591008
+      ],
+      "accuracy_ci": [
+        0.880587899543379,
+        0.8986301369863013
+      ],
+      "roc_auc_ci": [
+        0.9463452701153019,
+        0.958561122578762
+      ]
+    },
+    "PyTorch bag-of-embeddings": {
+      "n": 4380,
+      "threshold": 0.5,
+      "accuracy": 0.9525114155251142,
+      "precision": 0.9571033210332104,
+      "recall": 0.9474885844748858,
+      "f1": 0.9522716842588343,
+      "roc_auc": 0.9898323637955838,
+      "tpr_at_1fpr": 0.7789954337899543,
+      "false_positive_rate": 0.04246575342465753,
+      "confusion_matrix": [
+        [
+          2097,
+          93
+        ],
+        [
+          115,
+          2075
+        ]
+      ],
+      "f1_ci": [
+        0.9459100278106252,
+        0.9582218954680989
+      ],
+      "accuracy_ci": [
+        0.9463413242009133,
+        0.9584474885844749
+      ],
+      "roc_auc_ci": [
+        0.9874737130168262,
+        0.992044223431538
+      ]
+    },
+    "GPT-2 perplexity (zero-shot)": {
+      "n": 4380,
+      "threshold": 0.5,
+      "accuracy": 0.9577625570776256,
+      "precision": 0.9530049706281066,
+      "recall": 0.963013698630137,
+      "f1": 0.957983193277311,
+      "roc_auc": 0.9897176872875878,
+      "tpr_at_1fpr": 0.791324200913242,
+      "false_positive_rate": 0.047488584474885846,
+      "confusion_matrix": [
+        [
+          2086,
+          104
+        ],
+        [
+          81,
+          2109
+        ]
+      ],
+      "f1_ci": [
+        0.9525080297661167,
+        0.9637899817119666
+      ],
+      "accuracy_ci": [
+        0.952054794520548,
+        0.9636986301369863
+      ],
+      "roc_auc_ci": [
+        0.9870985436083485,
+        0.9921697264444028
+      ]
+    },
+    "Fast-DetectGPT on GPT-2 (zero-shot)": {
+      "n": 4380,
+      "threshold": 0.5,
+      "accuracy": 0.95662100456621,
+      "precision": 0.9562043795620438,
+      "recall": 0.9570776255707762,
+      "f1": 0.9566408032861707,
+      "roc_auc": 0.9911805425241342,
+      "tpr_at_1fpr": 0.8767123287671232,
+      "false_positive_rate": 0.043835616438356165,
+      "confusion_matrix": [
+        [
+          2094,
+          96
+        ],
+        [
+          94,
+          2096
+        ]
+      ],
+      "f1_ci": [
+        0.9505127737093986,
+        0.9623248646997763
+      ],
+      "accuracy_ci": [
+        0.9504566210045662,
+        0.9623287671232876
+      ],
+      "roc_auc_ci": [
+        0.9890514532641105,
+        0.9929776693563522
+      ]
+    },
+    "DistilRoBERTa full fine-tuning": {
+      "n": 4380,
+      "threshold": 0.5,
+      "accuracy": 0.9858447488584475,
+      "precision": 0.975,
+      "recall": 0.9972602739726028,
+      "f1": 0.9860045146726862,
+      "roc_auc": 0.9991434707366402,
+      "tpr_at_1fpr": 0.9899543378995433,
+      "false_positive_rate": 0.025570776255707764,
+      "confusion_matrix": [
+        [
+          2134,
+          56
+        ],
+        [
+          6,
+          2184
+        ]
+      ],
+      "f1_ci": [
+        0.9824480472585755,
+        0.9893594140354366
+      ],
+      "accuracy_ci": [
+        0.9821917808219178,
+        0.9892694063926941
+      ],
+      "roc_auc_ci": [
+        0.9984851415733618,
+        0.9996634817872856
+      ]
+    },
+    "DistilRoBERTa + LoRA": {
+      "n": 4380,
+      "threshold": 0.5,
+      "accuracy": 0.9899543378995433,
+      "precision": 0.989507299270073,
+      "recall": 0.9904109589041096,
+      "f1": 0.9899589228662711,
+      "roc_auc": 0.9995600592147788,
+      "tpr_at_1fpr": 0.9899543378995433,
+      "false_positive_rate": 0.010502283105022832,
+      "confusion_matrix": [
+        [
+          2167,
+          23
+        ],
+        [
+          21,
+          2169
+        ]
+      ],
+      "f1_ci": [
+        0.9872374847463748,
+        0.9926908097982649
+      ],
+      "accuracy_ci": [
+        0.9872146118721461,
+        0.9926940639269406
+      ],
+      "roc_auc_ci": [
+        0.9993228717082631,
+        0.9997698833427159
+      ]
+    },
+    "DistilRoBERTa full FT, raw 0.5": {
+      "n": 4380,
+      "threshold": 0.5,
+      "accuracy": 0.963013698630137,
+      "precision": 0.9318568994889267,
+      "recall": 0.9990867579908675,
+      "f1": 0.9643014543851918,
+      "roc_auc": 0.9991434707366402,
+      "tpr_at_1fpr": 0.9899543378995433,
+      "false_positive_rate": 0.0730593607305936,
+      "confusion_matrix": [
+        [
+          2030,
+          160
+        ],
+        [
+          2,
+          2188
+        ]
+      ],
+      "f1_ci": [
+        0.9589787804496716,
+        0.9692453302957255
+      ],
+      "accuracy_ci": [
+        0.9573002283105023,
+        0.9682705479452054
+      ],
+      "roc_auc_ci": [
+        0.9984851415733618,
+        0.9996634817872856
+      ]
+    },
+    "DistilRoBERTa + LoRA, raw 0.5": {
+      "n": 4380,
+      "threshold": 0.5,
+      "accuracy": 0.9440639269406392,
+      "precision": 0.900041135335253,
+      "recall": 0.9990867579908675,
+      "f1": 0.9469811729062974,
+      "roc_auc": 0.9995600592147788,
+      "tpr_at_1fpr": 0.9899543378995433,
+      "false_positive_rate": 0.11095890410958904,
+      "confusion_matrix": [
+        [
+          1947,
+          243
+        ],
+        [
+          2,
+          2188
+        ]
+      ],
+      "f1_ci": [
+        0.9407946827871673,
+        0.9527541911604616
+      ],
+      "accuracy_ci": [
+        0.9372089041095891,
+        0.9504566210045662
+      ],
+      "roc_auc_ci": [
+        0.9993228717082631,
+        0.9997698833427159
+      ]
+    }
+  },
+  "per_domain_f1": {
+    "Length baseline": {
+      "finance": 0.74501573976915,
+      "medicine": 0.8674698795180723,
+      "open_qa": 0.5531914893617021,
+      "reddit_eli5": 0.7878596269364527,
+      "wiki_csai": 0.7120418848167539
+    },
+    "TF-IDF + LogReg": {
+      "finance": 0.9922279792746114,
+      "medicine": 1.0,
+      "open_qa": 0.9505703422053232,
+      "reddit_eli5": 0.9918478260869565,
+      "wiki_csai": 0.967741935483871
+    },
+    "Stylometry + Random Forest": {
+      "finance": 0.9477707006369427,
+      "medicine": 0.9783549783549783,
+      "open_qa": 0.8173913043478261,
+      "reddit_eli5": 0.9401300034211426,
+      "wiki_csai": 0.8674698795180723
+    },
+    "Stylometry + LogReg": {
+      "finance": 0.9219143576826196,
+      "medicine": 0.9230769230769231,
+      "open_qa": 0.6952789699570815,
+      "reddit_eli5": 0.8966461327857632,
+      "wiki_csai": 0.8235294117647058
+    },
+    "PyTorch bag-of-embeddings": {
+      "finance": 0.9792746113989638,
+      "medicine": 0.9957805907172996,
+      "open_qa": 0.7933884297520661,
+      "reddit_eli5": 0.9552845528455285,
+      "wiki_csai": 0.9419354838709677
+    },
+    "GPT-2 perplexity (zero-shot)": {
+      "finance": 0.9571984435797666,
+      "medicine": 0.9914529914529915,
+      "open_qa": 0.8960573476702509,
+      "reddit_eli5": 0.9631632308212233,
+      "wiki_csai": 0.925
+    },
+    "Fast-DetectGPT on GPT-2 (zero-shot)": {
+      "finance": 0.9515072083879423,
+      "medicine": 0.9023255813953488,
+      "open_qa": 0.9283018867924528,
+      "reddit_eli5": 0.9644533869885983,
+      "wiki_csai": 0.9554140127388535
+    },
+    "DistilRoBERTa full fine-tuning": {
+      "finance": 0.9883570504527813,
+      "medicine": 1.0,
+      "open_qa": 0.9818181818181818,
+      "reddit_eli5": 0.9872654155495979,
+      "wiki_csai": 0.9382716049382716
+    },
+    "DistilRoBERTa + LoRA": {
+      "finance": 0.9908735332464146,
+      "medicine": 1.0,
+      "open_qa": 0.951310861423221,
+      "reddit_eli5": 0.994579945799458,
+      "wiki_csai": 0.95
+    },
+    "DistilRoBERTa full FT, raw 0.5": {
+      "finance": 0.9746192893401016,
+      "medicine": 0.9833333333333333,
+      "open_qa": 0.9543859649122807,
+      "reddit_eli5": 0.9659016393442623,
+      "wiki_csai": 0.88
+    },
+    "DistilRoBERTa + LoRA, raw 0.5": {
+      "finance": 0.9540372670807453,
+      "medicine": 0.932806324110672,
+      "open_qa": 0.9096989966555183,
+      "reddit_eli5": 0.9605734767025089,
+      "wiki_csai": 0.7794871794871795
+    }
+  },
+  "error_rate_by_length": {
+    "Length baseline": {
+      "5–49": {
+        "error_rate": 0.02445302445302445,
+        "false_positive_rate": 0.0,
+        "miss_rate": 1.0
+      },
+      "50–99": {
+        "error_rate": 0.231311706629055,
+        "false_positive_rate": 0.0,
+        "miss_rate": 1.0
+      },
+      "100–199": {
+        "error_rate": 0.2969023962594974,
+        "false_positive_rate": 0.6707317073170732,
+        "miss_rate": 0.14602132895816242
+      },
+      "200–399": {
+        "error_rate": 0.27298050139275765,
+        "false_positive_rate": 1.0,
+        "miss_rate": 0.0
+      },
+      "400+": {
+        "error_rate": 0.9528301886792453,
+        "false_positive_rate": 1.0,
+        "miss_rate": 0.0
+      }
+    },
+    "TF-IDF + LogReg": {
+      "5–49": {
+        "error_rate": 0.005148005148005148,
+        "false_positive_rate": 0.002638522427440633,
+        "miss_rate": 0.10526315789473684
+      },
+      "50–99": {
+        "error_rate": 0.012693935119887164,
+        "false_positive_rate": 0.005504587155963303,
+        "miss_rate": 0.036585365853658534
+      },
+      "100–199": {
+        "error_rate": 0.014026884862653419,
+        "false_positive_rate": 0.012195121951219513,
+        "miss_rate": 0.014766201804757998
+      },
+      "200–399": {
+        "error_rate": 0.009285051067780872,
+        "false_positive_rate": 0.023809523809523808,
+        "miss_rate": 0.0038314176245210726
+      },
+      "400+": {
+        "error_rate": 0.009433962264150943,
+        "false_positive_rate": 0.009900990099009901,
+        "miss_rate": 0.0
+      }
+    },
+    "Stylometry + Random Forest": {
+      "5–49": {
+        "error_rate": 0.02574002574002574,
+        "false_positive_rate": 0.009234828496042216,
+        "miss_rate": 0.6842105263157895
+      },
+      "50–99": {
+        "error_rate": 0.11142454160789844,
+        "false_positive_rate": 0.029357798165137616,
+        "miss_rate": 0.38414634146341464
+      },
+      "100–199": {
+        "error_rate": 0.07597895967270601,
+        "false_positive_rate": 0.10569105691056911,
+        "miss_rate": 0.06398687448728466
+      },
+      "200–399": {
+        "error_rate": 0.0436397400185701,
+        "false_positive_rate": 0.12244897959183673,
+        "miss_rate": 0.0140485312899106
+      },
+      "400+": {
+        "error_rate": 0.08490566037735849,
+        "false_positive_rate": 0.0891089108910891,
+        "miss_rate": 0.0
+      }
+    },
+    "Stylometry + LogReg": {
+      "5–49": {
+        "error_rate": 0.09266409266409266,
+        "false_positive_rate": 0.07519788918205805,
+        "miss_rate": 0.7894736842105263
+      },
+      "50–99": {
+        "error_rate": 0.15796897038081806,
+        "false_positive_rate": 0.07155963302752294,
+        "miss_rate": 0.4451219512195122
+      },
+      "100–199": {
+        "error_rate": 0.1244886031560491,
+        "false_positive_rate": 0.13414634146341464,
+        "miss_rate": 0.12059064807219032
+      },
+      "200–399": {
+        "error_rate": 0.060352831940575676,
+        "false_positive_rate": 0.15306122448979592,
+        "miss_rate": 0.02554278416347382
+      },
+      "400+": {
+        "error_rate": 0.19811320754716982,
+        "false_positive_rate": 0.2079207920792079,
+        "miss_rate": 0.0
+      }
+    },
+    "PyTorch bag-of-embeddings": {
+      "5–49": {
+        "error_rate": 0.0682110682110682,
+        "false_positive_rate": 0.0633245382585752,
+        "miss_rate": 0.2631578947368421
+      },
+      "50–99": {
+        "error_rate": 0.07757404795486601,
+        "false_positive_rate": 0.04036697247706422,
+        "miss_rate": 0.20121951219512196
+      },
+      "100–199": {
+        "error_rate": 0.04324956165984804,
+        "false_positive_rate": 0.032520325203252036,
+        "miss_rate": 0.0475799835931091
+      },
+      "200–399": {
+        "error_rate": 0.02321262766945218,
+        "false_positive_rate": 0.02040816326530612,
+        "miss_rate": 0.024265644955300127
+      },
+      "400+": {
+        "error_rate": 0.009433962264150943,
+        "false_positive_rate": 0.009900990099009901,
+        "miss_rate": 0.0
+      }
+    },
+    "GPT-2 perplexity (zero-shot)": {
+      "5–49": {
+        "error_rate": 0.059202059202059204,
+        "false_positive_rate": 0.044854881266490766,
+        "miss_rate": 0.631578947368421
+      },
+      "50–99": {
+        "error_rate": 0.045133991537376586,
+        "false_positive_rate": 0.03302752293577982,
+        "miss_rate": 0.08536585365853659
+      },
+      "100–199": {
+        "error_rate": 0.03682057276446522,
+        "false_positive_rate": 0.054878048780487805,
+        "miss_rate": 0.029532403609515995
+      },
+      "200–399": {
+        "error_rate": 0.033426183844011144,
+        "false_positive_rate": 0.05782312925170068,
+        "miss_rate": 0.024265644955300127
+      },
+      "400+": {
+        "error_rate": 0.07547169811320754,
+        "false_positive_rate": 0.07920792079207921,
+        "miss_rate": 0.0
+      }
+    },
+    "Fast-DetectGPT on GPT-2 (zero-shot)": {
+      "5–49": {
+        "error_rate": 0.03861003861003861,
+        "false_positive_rate": 0.01978891820580475,
+        "miss_rate": 0.7894736842105263
+      },
+      "50–99": {
+        "error_rate": 0.04231311706629055,
+        "false_positive_rate": 0.027522935779816515,
+        "miss_rate": 0.09146341463414634
+      },
+      "100–199": {
+        "error_rate": 0.03974284044418469,
+        "false_positive_rate": 0.06097560975609756,
+        "miss_rate": 0.031173092698933553
+      },
+      "200–399": {
+        "error_rate": 0.051996285979572884,
+        "false_positive_rate": 0.10204081632653061,
+        "miss_rate": 0.033205619412515965
+      },
+      "400+": {
+        "error_rate": 0.05660377358490566,
+        "false_positive_rate": 0.0594059405940594,
+        "miss_rate": 0.0
+      }
+    },
+    "DistilRoBERTa full fine-tuning": {
+      "5–49": {
+        "error_rate": 0.007722007722007722,
+        "false_positive_rate": 0.00395778364116095,
+        "miss_rate": 0.15789473684210525
+      },
+      "50–99": {
+        "error_rate": 0.019746121297602257,
+        "false_positive_rate": 0.023853211009174313,
+        "miss_rate": 0.006097560975609756
+      },
+      "100–199": {
+        "error_rate": 0.014026884862653419,
+        "false_positive_rate": 0.046747967479674794,
+        "miss_rate": 0.0008203445447087777
+      },
+      "200–399": {
+        "error_rate": 0.012999071494893221,
+        "false_positive_rate": 0.04421768707482993,
+        "miss_rate": 0.001277139208173691
+      },
+      "400+": {
+        "error_rate": 0.03773584905660377,
+        "false_positive_rate": 0.039603960396039604,
+        "miss_rate": 0.0
+      }
+    },
+    "DistilRoBERTa + LoRA": {
+      "5–49": {
+        "error_rate": 0.01287001287001287,
+        "false_positive_rate": 0.00395778364116095,
+        "miss_rate": 0.3684210526315789
+      },
+      "50–99": {
+        "error_rate": 0.018335684062059238,
+        "false_positive_rate": 0.007339449541284404,
+        "miss_rate": 0.054878048780487805
+      },
+      "100–199": {
+        "error_rate": 0.007597895967270602,
+        "false_positive_rate": 0.018292682926829267,
+        "miss_rate": 0.003281378178835111
+      },
+      "200–399": {
+        "error_rate": 0.004642525533890436,
+        "false_positive_rate": 0.013605442176870748,
+        "miss_rate": 0.001277139208173691
+      },
+      "400+": {
+        "error_rate": 0.02830188679245283,
+        "false_positive_rate": 0.0297029702970297,
+        "miss_rate": 0.0
+      }
+    },
+    "DistilRoBERTa full FT, raw 0.5": {
+      "5–49": {
+        "error_rate": 0.032175032175032175,
+        "false_positive_rate": 0.0316622691292876,
+        "miss_rate": 0.05263157894736842
+      },
+      "50–99": {
+        "error_rate": 0.06346967559943582,
+        "false_positive_rate": 0.08073394495412844,
+        "miss_rate": 0.006097560975609756
+      },
+      "100–199": {
+        "error_rate": 0.03331385154880187,
+        "false_positive_rate": 0.11585365853658537,
+        "miss_rate": 0.0
+      },
+      "200–399": {
+        "error_rate": 0.025069637883008356,
+        "false_positive_rate": 0.09183673469387756,
+        "miss_rate": 0.0
+      },
+      "400+": {
+        "error_rate": 0.07547169811320754,
+        "false_positive_rate": 0.07920792079207921,
+        "miss_rate": 0.0
+      }
+    },
+    "DistilRoBERTa + LoRA, raw 0.5": {
+      "5–49": {
+        "error_rate": 0.05148005148005148,
+        "false_positive_rate": 0.051451187335092345,
+        "miss_rate": 0.05263157894736842
+      },
+      "50–99": {
+        "error_rate": 0.07193229901269393,
+        "false_positive_rate": 0.09357798165137615,
+        "miss_rate": 0.0
+      },
+      "100–199": {
+        "error_rate": 0.05201636469900643,
+        "false_positive_rate": 0.18089430894308944,
+        "miss_rate": 0.0
+      },
+      "200–399": {
+        "error_rate": 0.04549675023212628,
+        "false_positive_rate": 0.16326530612244897,
+        "miss_rate": 0.001277139208173691
+      },
+      "400+": {
+        "error_rate": 0.1509433962264151,
+        "false_positive_rate": 0.15841584158415842,
+        "miss_rate": 0.0
+      }
+    }
+  },
+  "length_bucket_sizes": {
+    "5–49": {
+      "human": 758,
+      "chatgpt": 19
+    },
+    "50–99": {
+      "human": 545,
+      "chatgpt": 164
+    },
+    "100–199": {
+      "human": 492,
+      "chatgpt": 1219
+    },
+    "200–399": {
+      "human": 294,
+      "chatgpt": 783
+    },
+    "400+": {
+      "human": 101,
+      "chatgpt": 5
+    }
+  },
+  "error_examples": {
+    "model": "DistilRoBERTa + LoRA",
+    "false_positives_human_flagged": [
+      {
+        "domain": "reddit_eli5",
+        "p_chatgpt": 0.969,
+        "text": "ELI5: Reddit is like a school with many, many different classrooms. These classrooms are filled with subscribers or \"students\". Since there are so many classrooms, it's hard for some students to figure out which classes they want to attend. Therefore, a special class called \"Subreddit of the Day\" wa"
+      },
+      {
+        "domain": "wiki_csai",
+        "p_chatgpt": 0.952,
+        "text": "Michael Joseph Mansfield (March 16, 1903 – October 5, 2001) was an American politician and diplomat. A Democrat, he served as a U.S. representative (1943–1953) and a U.S. senator (1953–1977) from Montana. He was the longest-serving Senate Majority Leader and served from 1961 to 1977. During his tenu"
+      },
+      {
+        "domain": "open_qa",
+        "p_chatgpt": 0.919,
+        "text": "Good Friday is a religious holiday observed primarily by Christians commemorating the crucifixion of Jesus Christ and his death at Calvary.The holiday is observed during Holy Week as part of the Paschal Triduum on the Friday preceding Easter Sunday, and may coincide with the Jewish observance of Pas"
+      },
+      {
+        "domain": "wiki_csai",
+        "p_chatgpt": 0.914,
+        "text": "Discovery is the act of detecting something new, or something previously unrecognized as meaningful. With reference to sciences and academic disciplines, discovery is the observation of new phenomena, new actions, or new events and providing new reasoning to explain the knowledge gathered through su"
+      },
+      {
+        "domain": "wiki_csai",
+        "p_chatgpt": 0.911,
+        "text": "Volodymyr Oleksandrovych Zelenskyy[a] (born 25 January 1978; also transliterated as Zelensky or Zelenskiy)[b] is a Ukrainian politician and former comedian and actor who has served as the sixth and current president of Ukraine since 2019. Born to a Ukrainian Jewish family, Zelenskyy grew up as a nat"
+      }
+    ],
+    "false_negatives_chatgpt_missed": [
+      {
+        "domain": "wiki_csai",
+        "p_chatgpt": 0.001,
+        "text": "In mathematics, a vector space is a collection of objects called vectors, which may be added together and multiplied (\"scaled\") by numbers, called scalars. Scalars are often taken to be real numbers, but there are also vector spaces with scalar multiplication by complex numbers, rational numbers, or"
+      },
+      {
+        "domain": "finance",
+        "p_chatgpt": 0.001,
+        "text": "If the underlying stays below the strike price, the put option will not be exercised and will expire worthless. This means that the value of the put option will be zero."
+      },
+      {
+        "domain": "reddit_eli5",
+        "p_chatgpt": 0.016,
+        "text": "When a bug dies, it doesn't have the energy or strength to hold itself up anymore. So, it just falls over and ends up on its back. It's kind of like if you were to lay down on the ground and close your eyes-you wouldn't be able to control which way you ended up facing. Similarly, a dead bug can't co"
+      },
+      {
+        "domain": "finance",
+        "p_chatgpt": 0.024,
+        "text": "I'm not sure what you mean by \"buying under your bid price.\" Could you provide some more context or clarify your question?"
+      },
+      {
+        "domain": "reddit_eli5",
+        "p_chatgpt": 0.047,
+        "text": "I'm sorry, but I'm unable to access external links and do not have information about a specific paper discussing erasers. Can you provide more context or a summary of the paper?"
+      }
+    ]
+  },
+  "bias": {
+    "artifact_prevalence": [
+      {
+        "artifact": "Space before punctuation (\"word , word\")",
+        "label": "human",
+        "raw_percent": 87.93262618459973,
+        "clean_percent": 0.0
+      },
+      {
+        "artifact": "Space before punctuation (\"word , word\")",
+        "label": "chatgpt",
+        "raw_percent": 0.2669005223624509,
+        "clean_percent": 0.0
+      },
+      {
+        "artifact": "Split contractions (\"do n't\")",
+        "label": "human",
+        "raw_percent": 33.77169018595625,
+        "clean_percent": 0.0
+      },
+      {
+        "artifact": "Split contractions (\"do n't\")",
+        "label": "chatgpt",
+        "raw_percent": 0.01143859381553361,
+        "clean_percent": 0.0
+      },
+      {
+        "artifact": "Missing space after period (\"end.Next\")",
+        "label": "human",
+        "raw_percent": 1.4337660380202348,
+        "clean_percent": 0.27318800987244946
+      },
+      {
+        "artifact": "Missing space after period (\"end.Next\")",
+        "label": "chatgpt",
+        "raw_percent": 20.055667823235595,
+        "clean_percent": 0.03050291684142296
+      },
+      {
+        "artifact": "Line break inside the answer",
+        "label": "human",
+        "raw_percent": 1.1115925918947944,
+        "clean_percent": 0.0
+      },
+      {
+        "artifact": "Line break inside the answer",
+        "label": "chatgpt",
+        "raw_percent": 29.237045792503906,
+        "clean_percent": 0.0
+      }
+    ],
+    "shortcut_rule_accuracy": {
+      "all_answers_raw": 0.91835216382528,
+      "all_answers_clean": 0.33071471804700897,
+      "balanced_test_raw": 0.8577625570776256,
+      "balanced_test_clean": 0.5,
+      "balanced_test_raw_metrics": {
+        "n": 4380,
+        "threshold": 0.5,
+        "accuracy": 0.8577625570776256,
+        "precision": 0.7803220035778176,
+        "recall": 0.9958904109589041,
+        "f1": 0.8750250752256771,
+        "roc_auc": 0.8577625570776255,
+        "tpr_at_1fpr": 0.0,
+        "false_positive_rate": 0.28036529680365296,
+        "confusion_matrix": [
+          [
+            1576,
+            614
+          ],
+          [
+            9,
+            2181
+          ]
+        ]
+      }
+    },
+    "stress_test": [
+      {
+        "model": "Character n-grams (sees spaces)",
+        "setting": "Train raw → test raw",
+        "n": 4380,
+        "threshold": 0.5,
+        "accuracy": 0.9878995433789954,
+        "precision": 0.9881224303334856,
+        "recall": 0.9876712328767123,
+        "f1": 0.9878967800867778,
+        "roc_auc": 0.9994879172661121,
+        "tpr_at_1fpr": 0.9844748858447488,
+        "false_positive_rate": 0.011872146118721462,
+        "confusion_matrix": [
+          [
+            2164,
+            26
+          ],
+          [
+            27,
+            2163
+          ]
+        ]
+      },
+      {
+        "model": "Character n-grams (sees spaces)",
+        "setting": "Train raw → test clean",
+        "n": 4380,
+        "threshold": 0.5,
+        "accuracy": 0.9191780821917809,
+        "precision": 0.8683788121990369,
+        "recall": 0.9881278538812786,
+        "f1": 0.9243912857753097,
+        "roc_auc": 0.9916684389399721,
+        "tpr_at_1fpr": 0.8584474885844748,
+        "false_positive_rate": 0.14977168949771688,
+        "confusion_matrix": [
+          [
+            1862,
+            328
+          ],
+          [
+            26,
+            2164
+          ]
+        ]
+      },
+      {
+        "model": "Character n-grams (sees spaces)",
+        "setting": "Train clean → test clean",
+        "n": 4380,
+        "threshold": 0.5,
+        "accuracy": 0.9767123287671233,
+        "precision": 0.9802207911683533,
+        "recall": 0.9730593607305936,
+        "f1": 0.9766269477543538,
+        "roc_auc": 0.9974629386376431,
+        "tpr_at_1fpr": 0.9515981735159817,
+        "false_positive_rate": 0.019634703196347032,
+        "confusion_matrix": [
+          [
+            2147,
+            43
+          ],
+          [
+            59,
+            2131
+          ]
+        ]
+      },
+      {
+        "model": "Word n-grams (our TF-IDF)",
+        "setting": "Train raw → test raw",
+        "n": 4380,
+        "threshold": 0.5,
+        "accuracy": 0.9867579908675799,
+        "precision": 0.9903403863845446,
+        "recall": 0.9831050228310503,
+        "f1": 0.9867094408799266,
+        "roc_auc": 0.9991972644440275,
+        "tpr_at_1fpr": 0.9840182648401826,
+        "false_positive_rate": 0.009589041095890411,
+        "confusion_matrix": [
+          [
+            2169,
+            21
+          ],
+          [
+            37,
+            2153
+          ]
+        ]
+      },
+      {
+        "model": "Word n-grams (our TF-IDF)",
+        "setting": "Train raw → test clean",
+        "n": 4380,
+        "threshold": 0.5,
+        "accuracy": 0.9840182648401826,
+        "precision": 0.9862385321100917,
+        "recall": 0.9817351598173516,
+        "f1": 0.9839816933638444,
+        "roc_auc": 0.9988150789182878,
+        "tpr_at_1fpr": 0.9780821917808219,
+        "false_positive_rate": 0.0136986301369863,
+        "confusion_matrix": [
+          [
+            2160,
+            30
+          ],
+          [
+            40,
+            2150
+          ]
+        ]
+      },
+      {
+        "model": "Word n-grams (our TF-IDF)",
+        "setting": "Train clean → test clean",
+        "n": 4380,
+        "threshold": 0.5,
+        "accuracy": 0.9858447488584475,
+        "precision": 0.9885215794306703,
+        "recall": 0.9831050228310503,
+        "f1": 0.9858058608058609,
+        "roc_auc": 0.9990840474552241,
+        "tpr_at_1fpr": 0.9821917808219178,
+        "false_positive_rate": 0.01141552511415525,
+        "confusion_matrix": [
+          [
+            2165,
+            25
+          ],
+          [
+            37,
+            2153
+          ]
+        ]
+      }
+    ],
+    "url_placeholder_share": {
+      "human_percent": 9.147976944587114,
+      "chatgpt_percent": 0.09130856588483707
+    },
+    "url_placeholder_ablation": {
+      "with URL_0 placeholders": {
+        "all": {
+          "n": 4380,
+          "threshold": 0.5,
+          "accuracy": 0.9858447488584475,
+          "precision": 0.9885215794306703,
+          "recall": 0.9831050228310503,
+          "f1": 0.9858058608058609,
+          "roc_auc": 0.9990840474552241,
+          "tpr_at_1fpr": 0.9821917808219178,
+          "false_positive_rate": 0.01141552511415525,
+          "confusion_matrix": [
+            [
+              2165,
+              25
+            ],
+            [
+              37,
+              2153
+            ]
+          ]
+        },
+        "reddit_eli5": {
+          "n": 2948,
+          "threshold": 0.5,
+          "accuracy": 0.9898236092265943,
+          "precision": 0.9924965893587995,
+          "recall": 0.9871099050203528,
+          "f1": 0.9897959183673469,
+          "roc_auc": 0.9995576883069542,
+          "tpr_at_1fpr": 0.9905020352781547,
+          "false_positive_rate": 0.007462686567164179,
+          "confusion_matrix": [
+            [
+              1463,
+              11
+            ],
+            [
+              19,
+              1455
+            ]
+          ]
+        }
+      },
+      "URL_0 placeholders removed": {
+        "all": {
+          "n": 4380,
+          "threshold": 0.5,
+          "accuracy": 0.986986301369863,
+          "precision": 0.9894446994033961,
+          "recall": 0.9844748858447488,
+          "f1": 0.9869535362783246,
+          "roc_auc": 0.9990930130731219,
+          "tpr_at_1fpr": 0.982648401826484,
+          "false_positive_rate": 0.010502283105022832,
+          "confusion_matrix": [
+            [
+              2167,
+              23
+            ],
+            [
+              34,
+              2156
+            ]
+          ]
+        },
+        "reddit_eli5": {
+          "n": 2948,
+          "threshold": 0.5,
+          "accuracy": 0.9901628222523745,
+          "precision": 0.9918311776718857,
+          "recall": 0.9884667571234735,
+          "f1": 0.9901461094121644,
+          "roc_auc": 0.9995079800209512,
+          "tpr_at_1fpr": 0.9898236092265943,
+          "false_positive_rate": 0.008141112618724558,
+          "confusion_matrix": [
+            [
+              1462,
+              12
+            ],
+            [
+              17,
+              1457
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "lodo": [
+    {
+      "model": "Length baseline",
+      "key": "length",
+      "domain": "finance",
+      "n_test": 770,
+      "f1_seen": 0.74501573976915,
+      "f1_unseen": 0.7409700722394221,
+      "f1_drop": 0.004045667529727903,
+      "accuracy_seen": 0.6844155844155844,
+      "accuracy_unseen": 0.674025974025974,
+      "roc_auc_seen": 0.6729802664867599,
+      "roc_auc_unseen": 0.6729802664867599,
+      "fpr_unseen": 0.5844155844155844,
+      "f1_unseen_ci": [
+        0.7211690940065839,
+        0.7603400778949368
+      ]
+    },
+    {
+      "model": "TF-IDF + LogReg",
+      "key": "tfidf",
+      "domain": "finance",
+      "n_test": 770,
+      "f1_seen": 0.9922279792746114,
+      "f1_unseen": 0.9882659713168188,
+      "f1_drop": 0.003962007957792557,
+      "accuracy_seen": 0.9922077922077922,
+      "accuracy_unseen": 0.9883116883116884,
+      "roc_auc_seen": 0.9994670264800135,
+      "roc_auc_unseen": 0.9982796424354866,
+      "fpr_unseen": 0.007792207792207792,
+      "f1_unseen_ci": [
+        0.9815964180947969,
+        0.9948051948051948
+      ]
+    },
+    {
+      "model": "Stylometry + Random Forest",
+      "key": "style_rf",
+      "domain": "finance",
+      "n_test": 770,
+      "f1_seen": 0.9477707006369427,
+      "f1_unseen": 0.9318181818181818,
+      "f1_drop": 0.01595251881876092,
+      "accuracy_seen": 0.9467532467532468,
+      "accuracy_unseen": 0.9298701298701298,
+      "roc_auc_seen": 0.9882644628099174,
+      "roc_auc_unseen": 0.9814032720526227,
+      "fpr_unseen": 0.0987012987012987,
+      "f1_unseen_ci": [
+        0.9168739146080073,
+        0.9456418599534804
+      ]
+    },
+    {
+      "model": "Stylometry + LogReg",
+      "key": "style_lr",
+      "domain": "finance",
+      "n_test": 770,
+      "f1_seen": 0.9219143576826196,
+      "f1_unseen": 0.9188514357053683,
+      "f1_drop": 0.0030629219772513316,
+      "accuracy_seen": 0.9194805194805195,
+      "accuracy_unseen": 0.9155844155844156,
+      "roc_auc_seen": 0.964344746162928,
+      "roc_auc_unseen": 0.9605667060212515,
+      "fpr_unseen": 0.12467532467532468,
+      "f1_unseen_ci": [
+        0.8996252915664407,
+        0.9337376109925701
+      ]
+    },
+    {
+      "model": "PyTorch bag-of-embeddings",
+      "key": "nn",
+      "domain": "finance",
+      "n_test": 770,
+      "f1_seen": 0.9792746113989638,
+      "f1_unseen": 0.9502617801047121,
+      "f1_drop": 0.029012831294251695,
+      "accuracy_seen": 0.9792207792207792,
+      "accuracy_unseen": 0.9506493506493506,
+      "roc_auc_seen": 0.9971799628942486,
+      "roc_auc_unseen": 0.9912362961713611,
+      "fpr_unseen": 0.04155844155844156,
+      "f1_unseen_ci": [
+        0.9364897335080822,
+        0.9662693839149208
+      ]
+    },
+    {
+      "model": "GPT-2 perplexity (zero-shot)",
+      "key": "ppl",
+      "domain": "finance",
+      "n_test": 770,
+      "f1_seen": 0.9571984435797666,
+      "f1_unseen": 0.9571984435797666,
+      "f1_drop": 0.0,
+      "accuracy_seen": 0.9571428571428572,
+      "accuracy_unseen": 0.9571428571428572,
+      "roc_auc_seen": 0.9925653567212009,
+      "roc_auc_unseen": 0.9925653567212009,
+      "fpr_unseen": 0.04415584415584416,
+      "f1_unseen_ci": [
+        0.9417852522639069,
+        0.9692503259452412
+      ]
+    },
+    {
+      "model": "Fast-DetectGPT on GPT-2 (zero-shot)",
+      "key": "fdg",
+      "domain": "finance",
+      "n_test": 770,
+      "f1_seen": 0.9515072083879423,
+      "f1_unseen": 0.9459815546772069,
+      "f1_drop": 0.005525653710735434,
+      "accuracy_seen": 0.951948051948052,
+      "accuracy_unseen": 0.9467532467532468,
+      "roc_auc_seen": 0.9883420475628268,
+      "roc_auc_unseen": 0.9883420475628268,
+      "fpr_unseen": 0.03896103896103896,
+      "f1_unseen_ci": [
+        0.929427430093209,
+        0.9601246111327149
+      ]
+    },
+    {
+      "model": "Length baseline",
+      "key": "length",
+      "domain": "medicine",
+      "n_test": 236,
+      "f1_seen": 0.8674698795180723,
+      "f1_unseen": 0.8674698795180723,
+      "f1_drop": 0.0,
+      "accuracy_seen": 0.8601694915254238,
+      "accuracy_unseen": 0.8601694915254238,
+      "roc_auc_seen": 0.9211074403906924,
+      "roc_auc_unseen": 0.9211074403906924,
+      "fpr_unseen": 0.19491525423728814,
+      "f1_unseen_ci": [
+        0.8333333333333334,
+        0.908384643245201
+      ]
+    },
+    {
+      "model": "TF-IDF + LogReg",
+      "key": "tfidf",
+      "domain": "medicine",
+      "n_test": 236,
+      "f1_seen": 1.0,
+      "f1_unseen": 0.9833333333333333,
+      "f1_drop": 0.01666666666666672,
+      "accuracy_seen": 1.0,
+      "accuracy_unseen": 0.9830508474576272,
+      "roc_auc_seen": 1.0,
+      "roc_auc_unseen": 1.0,
+      "fpr_unseen": 0.03389830508474576,
+      "f1_unseen_ci": [
+        0.9671144195383071,
+        0.9957805907172996
+      ]
+    },
+    {
+      "model": "Stylometry + Random Forest",
+      "key": "style_rf",
+      "domain": "medicine",
+      "n_test": 236,
+      "f1_seen": 0.9783549783549783,
+      "f1_unseen": 0.9694323144104804,
+      "f1_drop": 0.008922663944497922,
+      "accuracy_seen": 0.9788135593220338,
+      "accuracy_unseen": 0.9703389830508474,
+      "roc_auc_seen": 0.9992818155702384,
+      "roc_auc_unseen": 0.9975222637173226,
+      "fpr_unseen": 0.0,
+      "f1_unseen_ci": [
+        0.9509940476190476,
+        0.9914529914529915
+      ]
+    },
+    {
+      "model": "Stylometry + LogReg",
+      "key": "style_lr",
+      "domain": "medicine",
+      "n_test": 236,
+      "f1_seen": 0.9230769230769231,
+      "f1_unseen": 0.9191489361702128,
+      "f1_drop": 0.003927986906710368,
+      "accuracy_seen": 0.923728813559322,
+      "accuracy_unseen": 0.9194915254237288,
+      "roc_auc_seen": 0.9831944843435794,
+      "roc_auc_unseen": 0.978813559322034,
+      "fpr_unseen": 0.07627118644067797,
+      "f1_unseen_ci": [
+        0.8851671558450855,
+        0.9528096195288025
+      ]
+    },
+    {
+      "model": "PyTorch bag-of-embeddings",
+      "key": "nn",
+      "domain": "medicine",
+      "n_test": 236,
+      "f1_seen": 0.9957805907172996,
+      "f1_unseen": 0.9915254237288136,
+      "f1_drop": 0.004255166988486048,
+      "accuracy_seen": 0.9957627118644068,
+      "accuracy_unseen": 0.9915254237288136,
+      "roc_auc_seen": 1.0,
+      "roc_auc_unseen": 0.9998563631140477,
+      "fpr_unseen": 0.00847457627118644,
+      "f1_unseen_ci": [
+        0.9787188384622408,
+        1.0
+      ]
+    },
+    {
+      "model": "GPT-2 perplexity (zero-shot)",
+      "key": "ppl",
+      "domain": "medicine",
+      "n_test": 236,
+      "f1_seen": 0.9914529914529915,
+      "f1_unseen": 0.9914529914529915,
+      "f1_drop": 0.0,
+      "accuracy_seen": 0.9915254237288136,
+      "accuracy_unseen": 0.9915254237288136,
+      "roc_auc_seen": 1.0,
+      "roc_auc_unseen": 1.0,
+      "fpr_unseen": 0.0,
+      "f1_unseen_ci": [
+        0.9783549783549783,
+        1.0
+      ]
+    },
+    {
+      "model": "Fast-DetectGPT on GPT-2 (zero-shot)",
+      "key": "fdg",
+      "domain": "medicine",
+      "n_test": 236,
+      "f1_seen": 0.9023255813953488,
+      "f1_unseen": 0.9023255813953488,
+      "f1_drop": 0.0,
+      "accuracy_seen": 0.9110169491525424,
+      "accuracy_unseen": 0.9110169491525424,
+      "roc_auc_seen": 0.9977736282677392,
+      "roc_auc_unseen": 0.9977736282677392,
+      "fpr_unseen": 0.0,
+      "f1_unseen_ci": [
+        0.8597650204024202,
+        0.9417040358744395
+      ]
+    },
+    {
+      "model": "Length baseline",
+      "key": "length",
+      "domain": "open_qa",
+      "n_test": 272,
+      "f1_seen": 0.5531914893617021,
+      "f1_unseen": 0.5376344086021505,
+      "f1_drop": 0.015557080759551645,
+      "accuracy_seen": 0.6911764705882353,
+      "accuracy_unseen": 0.6838235294117647,
+      "roc_auc_seen": 0.9719398788927336,
+      "roc_auc_unseen": 0.9719398788927336,
+      "fpr_unseen": 0.0,
+      "f1_unseen_ci": [
+        0.44571428571428573,
+        0.6124210090127422
+      ]
+    },
+    {
+      "model": "TF-IDF + LogReg",
+      "key": "tfidf",
+      "domain": "open_qa",
+      "n_test": 272,
+      "f1_seen": 0.9505703422053232,
+      "f1_unseen": 0.8403361344537815,
+      "f1_drop": 0.11023420775154169,
+      "accuracy_seen": 0.9522058823529411,
+      "accuracy_unseen": 0.8602941176470589,
+      "roc_auc_seen": 0.9944312283737023,
+      "roc_auc_unseen": 0.9701557093425605,
+      "fpr_unseen": 0.014705882352941176,
+      "f1_unseen_ci": [
+        0.7807017543859649,
+        0.8836002546772456
+      ]
+    },
+    {
+      "model": "Stylometry + Random Forest",
+      "key": "style_rf",
+      "domain": "open_qa",
+      "n_test": 272,
+      "f1_seen": 0.8173913043478261,
+      "f1_unseen": 0.7692307692307693,
+      "f1_drop": 0.04816053511705687,
+      "accuracy_seen": 0.8455882352941176,
+      "accuracy_unseen": 0.8125,
+      "roc_auc_seen": 0.9809147923875432,
+      "roc_auc_unseen": 0.9639651816608997,
+      "fpr_unseen": 0.0,
+      "f1_unseen_ci": [
+        0.6984081707765918,
+        0.8225108225108225
+      ]
+    },
+    {
+      "model": "Stylometry + LogReg",
+      "key": "style_lr",
+      "domain": "open_qa",
+      "n_test": 272,
+      "f1_seen": 0.6952789699570815,
+      "f1_unseen": 0.6751054852320675,
+      "f1_drop": 0.020173484725014013,
+      "accuracy_seen": 0.7389705882352942,
+      "accuracy_unseen": 0.7169117647058824,
+      "roc_auc_seen": 0.8163386678200693,
+      "roc_auc_unseen": 0.7856833910034602,
+      "fpr_unseen": 0.15441176470588236,
+      "f1_unseen_ci": [
+        0.5964678362573099,
+        0.7355487603305785
+      ]
+    },
+    {
+      "model": "PyTorch bag-of-embeddings",
+      "key": "nn",
+      "domain": "open_qa",
+      "n_test": 272,
+      "f1_seen": 0.7933884297520661,
+      "f1_unseen": 0.7257383966244726,
+      "f1_drop": 0.06765003312759355,
+      "accuracy_seen": 0.8161764705882353,
+      "accuracy_unseen": 0.7610294117647058,
+      "roc_auc_seen": 0.9255514705882354,
+      "roc_auc_unseen": 0.8560769896193772,
+      "fpr_unseen": 0.11029411764705882,
+      "f1_unseen_ci": [
+        0.6635032041501373,
+        0.7801028252136681
+      ]
+    },
+    {
+      "model": "GPT-2 perplexity (zero-shot)",
+      "key": "ppl",
+      "domain": "open_qa",
+      "n_test": 272,
+      "f1_seen": 0.8960573476702509,
+      "f1_unseen": 0.9,
+      "f1_drop": -0.003942652329749108,
+      "accuracy_seen": 0.8933823529411765,
+      "accuracy_unseen": 0.8970588235294118,
+      "roc_auc_seen": 0.9435553633217993,
+      "roc_auc_unseen": 0.9435553633217993,
+      "fpr_unseen": 0.1323529411764706,
+      "f1_unseen_ci": [
+        0.8634336429571192,
+        0.9247577795508948
+      ]
+    },
+    {
+      "model": "Fast-DetectGPT on GPT-2 (zero-shot)",
+      "key": "fdg",
+      "domain": "open_qa",
+      "n_test": 272,
+      "f1_seen": 0.9283018867924528,
+      "f1_unseen": 0.9242424242424242,
+      "f1_drop": 0.004059462550028647,
+      "accuracy_seen": 0.9301470588235294,
+      "accuracy_unseen": 0.9264705882352942,
+      "roc_auc_seen": 0.9844290657439446,
+      "roc_auc_unseen": 0.9844290657439446,
+      "fpr_unseen": 0.04411764705882353,
+      "f1_unseen_ci": [
+        0.8964247527399092,
+        0.948227215980025
+      ]
+    },
+    {
+      "model": "Length baseline",
+      "key": "length",
+      "domain": "reddit_eli5",
+      "n_test": 2948,
+      "f1_seen": 0.7878596269364527,
+      "f1_unseen": 0.7702349869451697,
+      "f1_drop": 0.017624639991283053,
+      "accuracy_seen": 0.7723880597014925,
+      "accuracy_unseen": 0.7611940298507462,
+      "roc_auc_seen": 0.7896872336234211,
+      "roc_auc_unseen": 0.7896872336234211,
+      "fpr_unseen": 0.2781546811397558,
+      "f1_unseen_ci": [
+        0.7579078187244164,
+        0.78363891215398
+      ]
+    },
+    {
+      "model": "TF-IDF + LogReg",
+      "key": "tfidf",
+      "domain": "reddit_eli5",
+      "n_test": 2948,
+      "f1_seen": 0.9918478260869565,
+      "f1_unseen": 0.8658769583492548,
+      "f1_drop": 0.12597086773770172,
+      "accuracy_seen": 0.9918588873812755,
+      "accuracy_unseen": 0.8809362279511533,
+      "roc_auc_seen": 0.9995853040214004,
+      "roc_auc_unseen": 0.9821551855868065,
+      "fpr_unseen": 0.0067842605156037995,
+      "f1_unseen_ci": [
+        0.8523759781233325,
+        0.8818103579476276
+      ]
+    },
+    {
+      "model": "Stylometry + Random Forest",
+      "key": "style_rf",
+      "domain": "reddit_eli5",
+      "n_test": 2948,
+      "f1_seen": 0.9401300034211426,
+      "f1_unseen": 0.8603022484334685,
+      "f1_drop": 0.07982775498767414,
+      "accuracy_seen": 0.9406377204884667,
+      "accuracy_unseen": 0.871438263229308,
+      "roc_auc_seen": 0.9847876535663854,
+      "roc_auc_unseen": 0.9517654726245423,
+      "fpr_unseen": 0.048846675712347354,
+      "f1_unseen_ci": [
+        0.8474127047886839,
+        0.8736795706931619
+      ]
+    },
+    {
+      "model": "Stylometry + LogReg",
+      "key": "style_lr",
+      "domain": "reddit_eli5",
+      "n_test": 2948,
+      "f1_seen": 0.8966461327857632,
+      "f1_unseen": 0.8633496846531185,
+      "f1_drop": 0.03329644813264476,
+      "accuracy_seen": 0.8975576662143826,
+      "accuracy_unseen": 0.8677069199457259,
+      "roc_auc_seen": 0.960381115269833,
+      "roc_auc_unseen": 0.9304953890962113,
+      "fpr_unseen": 0.10040705563093623,
+      "f1_unseen_ci": [
+        0.8521964110941858,
+        0.8759094896877617
+      ]
+    },
+    {
+      "model": "PyTorch bag-of-embeddings",
+      "key": "nn",
+      "domain": "reddit_eli5",
+      "n_test": 2948,
+      "f1_seen": 0.9552845528455285,
+      "f1_unseen": 0.7505087505087505,
+      "f1_drop": 0.20477580233677795,
+      "accuracy_seen": 0.9552238805970149,
+      "accuracy_unseen": 0.7920624151967436,
+      "roc_auc_seen": 0.9902378449432866,
+      "roc_auc_unseen": 0.9314159129110828,
+      "fpr_unseen": 0.041383989145183174,
+      "f1_unseen_ci": [
+        0.730950721088063,
+        0.7737070741812924
+      ]
+    },
+    {
+      "model": "GPT-2 perplexity (zero-shot)",
+      "key": "ppl",
+      "domain": "reddit_eli5",
+      "n_test": 2948,
+      "f1_seen": 0.9631632308212233,
+      "f1_unseen": 0.9624619546838011,
+      "f1_drop": 0.0007012761374222132,
+      "accuracy_seen": 0.9630257801899593,
+      "accuracy_unseen": 0.9623473541383989,
+      "roc_auc_seen": 0.9926169387428223,
+      "roc_auc_unseen": 0.9926169387428223,
+      "fpr_unseen": 0.0407055630936228,
+      "f1_unseen_ci": [
+        0.9545446830833797,
+        0.9684691969613438
+      ]
+    },
+    {
+      "model": "Fast-DetectGPT on GPT-2 (zero-shot)",
+      "key": "fdg",
+      "domain": "reddit_eli5",
+      "n_test": 2948,
+      "f1_seen": 0.9644533869885983,
+      "f1_unseen": 0.9625455750745774,
+      "f1_drop": 0.001907811914020896,
+      "accuracy_seen": 0.9640434192672999,
+      "accuracy_unseen": 0.9616689280868386,
+      "roc_auc_seen": 0.9937910668686909,
+      "roc_auc_unseen": 0.9937910668686909,
+      "fpr_unseen": 0.06173677069199457,
+      "f1_unseen_ci": [
+        0.9560244271721545,
+        0.969421440636809
+      ]
+    },
+    {
+      "model": "Length baseline",
+      "key": "length",
+      "domain": "wiki_csai",
+      "n_test": 154,
+      "f1_seen": 0.7120418848167539,
+      "f1_unseen": 0.7120418848167539,
+      "f1_drop": 0.0,
+      "accuracy_seen": 0.6428571428571429,
+      "accuracy_unseen": 0.6428571428571429,
+      "roc_auc_seen": 0.5963062911114859,
+      "roc_auc_unseen": 0.5963062911114859,
+      "fpr_unseen": 0.5974025974025974,
+      "f1_unseen_ci": [
+        0.6734896779969074,
+        0.7512718400314105
+      ]
+    },
+    {
+      "model": "TF-IDF + LogReg",
+      "key": "tfidf",
+      "domain": "wiki_csai",
+      "n_test": 154,
+      "f1_seen": 0.967741935483871,
+      "f1_unseen": 0.8771929824561403,
+      "f1_drop": 0.0905489530277307,
+      "accuracy_seen": 0.9675324675324676,
+      "accuracy_unseen": 0.8636363636363636,
+      "roc_auc_seen": 0.9920728622027324,
+      "roc_auc_unseen": 0.9822904368358915,
+      "fpr_unseen": 0.24675324675324675,
+      "f1_unseen_ci": [
+        0.8333092485549133,
+        0.9212121212121213
+      ]
+    },
+    {
+      "model": "Stylometry + Random Forest",
+      "key": "style_rf",
+      "domain": "wiki_csai",
+      "n_test": 154,
+      "f1_seen": 0.8674698795180723,
+      "f1_unseen": 0.8444444444444444,
+      "f1_drop": 0.023025435073627865,
+      "accuracy_seen": 0.8571428571428571,
+      "accuracy_unseen": 0.8181818181818182,
+      "roc_auc_seen": 0.9389441727104065,
+      "roc_auc_unseen": 0.9212346095462978,
+      "fpr_unseen": 0.35064935064935066,
+      "f1_unseen_ci": [
+        0.8021390374331551,
+        0.8889210019267823
+      ]
+    },
+    {
+      "model": "Stylometry + LogReg",
+      "key": "style_lr",
+      "domain": "wiki_csai",
+      "n_test": 154,
+      "f1_seen": 0.8235294117647058,
+      "f1_unseen": 0.8208092485549133,
+      "f1_drop": 0.0027201632097925144,
+      "accuracy_seen": 0.8051948051948052,
+      "accuracy_unseen": 0.7987012987012987,
+      "roc_auc_seen": 0.9202226345083488,
+      "roc_auc_unseen": 0.9124641592174059,
+      "fpr_unseen": 0.3246753246753247,
+      "f1_unseen_ci": [
+        0.7751971220185295,
+        0.8675222629649031
+      ]
+    },
+    {
+      "model": "PyTorch bag-of-embeddings",
+      "key": "nn",
+      "domain": "wiki_csai",
+      "n_test": 154,
+      "f1_seen": 0.9419354838709677,
+      "f1_unseen": 0.8654970760233918,
+      "f1_drop": 0.07643840784757594,
+      "accuracy_seen": 0.9415584415584416,
+      "accuracy_unseen": 0.8506493506493507,
+      "roc_auc_seen": 0.9711587114184517,
+      "roc_auc_unseen": 0.9504132231404959,
+      "fpr_unseen": 0.2597402597402597,
+      "f1_unseen_ci": [
+        0.8151310741687979,
+        0.9036144578313253
+      ]
+    },
+    {
+      "model": "GPT-2 perplexity (zero-shot)",
+      "key": "ppl",
+      "domain": "wiki_csai",
+      "n_test": 154,
+      "f1_seen": 0.925,
+      "f1_unseen": 0.925,
+      "f1_drop": 0.0,
+      "accuracy_seen": 0.922077922077922,
+      "accuracy_unseen": 0.922077922077922,
+      "roc_auc_seen": 0.9767245741271715,
+      "roc_auc_unseen": 0.9767245741271715,
+      "fpr_unseen": 0.11688311688311688,
+      "f1_unseen_ci": [
+        0.8844512195121951,
+        0.9554280334895646
+      ]
+    },
+    {
+      "model": "Fast-DetectGPT on GPT-2 (zero-shot)",
+      "key": "fdg",
+      "domain": "wiki_csai",
+      "n_test": 154,
+      "f1_seen": 0.9554140127388535,
+      "f1_unseen": 0.9554140127388535,
+      "f1_drop": 0.0,
+      "accuracy_seen": 0.9545454545454546,
+      "accuracy_unseen": 0.9545454545454546,
+      "roc_auc_seen": 0.9893742621015348,
+      "roc_auc_unseen": 0.9893742621015348,
+      "fpr_unseen": 0.06493506493506493,
+      "f1_unseen_ci": [
+        0.9171974522292994,
+        0.9806451612903225
+      ]
+    },
+    {
+      "model": "DistilRoBERTa + LoRA",
+      "key": "roberta_lora",
+      "domain": "reddit_eli5",
+      "n_test": 2948,
+      "f1_seen": 0.994579945799458,
+      "f1_unseen": 0.9796200345423144,
+      "f1_drop": 0.014959911257143577,
+      "accuracy_seen": 0.994572591587517,
+      "accuracy_unseen": 0.9799864314789688,
+      "roc_auc_seen": 0.9998520257967595,
+      "roc_auc_unseen": 0.9993657590915535,
+      "fpr_unseen": 0.0020352781546811396,
+      "f1_unseen_ci": [
+        0.9749741604936275,
+        0.9848594329069137
+      ]
+    }
+  ],
+  "transformer": {
+    "roberta_full_info": {
+      "mode": "full",
+      "base_model": "distilbert/distilroberta-base",
+      "trainable_params": 82119938,
+      "total_params": 82119938,
+      "learning_rate": 3e-05,
+      "epochs": 1,
+      "batch_size": 16,
+      "max_length": 256,
+      "train_texts": 5000,
+      "val_texts": 1000,
+      "test_texts": 4380,
+      "train_minutes": 49.02676119407018,
+      "predict_minutes": 9.116895377635956,
+      "calibration": {
+        "coef": 1.9575549949387665,
+        "intercept": -13.778444488139131,
+        "fitted_on": "1000 validation texts"
+      }
+    },
+    "roberta_lora_info": {
+      "mode": "lora",
+      "base_model": "distilbert/distilroberta-base",
+      "trainable_params": 739586,
+      "total_params": 82859524,
+      "learning_rate": 0.0005,
+      "epochs": 1,
+      "batch_size": 16,
+      "max_length": 256,
+      "train_texts": 5000,
+      "val_texts": 1000,
+      "test_texts": 4380,
+      "train_minutes": 33.594114442666374,
+      "predict_minutes": 12.388738079865773,
+      "lora": {
+        "r": 8,
+        "alpha": 16,
+        "dropout": 0.1,
+        "target_modules": [
+          "query",
+          "value"
+        ]
+      },
+      "calibration": {
+        "coef": 0.8036665234361977,
+        "intercept": -6.21541285913288,
+        "fitted_on": "1000 validation texts"
+      }
+    }
+  },
+  "tfidf_top_features": {
+    "chatgpt": [
+      [
+        ". it",
+        14.407438075699485
+      ],
+      [
+        "important to",
+        12.868601734390255
+      ],
+      [
+        "important",
+        12.712007439968362
+      ],
+      [
+        ", which",
+        12.685352187829917
+      ],
+      [
+        "or",
+        12.246250929812561
+      ],
+      [
+        ". this",
+        12.016883761259283
+      ],
+      [
+        "and",
+        11.887469486403571
+      ],
+      [
+        ". the",
+        11.508518701651356
+      ],
+      [
+        ", including",
+        11.052288894962999
+      ],
+      [
+        ", the",
+        10.765409590392975
+      ],
+      [
+        "so ,",
+        10.739048068065635
+      ],
+      [
+        "help",
+        10.390192604157841
+      ],
+      [
+        ", such",
+        10.032445986343273
+      ],
+      [
+        "s important",
+        9.459363118850185
+      ],
+      [
+        "helps",
+        9.379082904666118
+      ],
+      [
+        "including",
+        9.09720512900017
+      ],
+      [
+        "means that",
+        8.994192701767435
+      ],
+      [
+        "because it",
+        8.861371713354057
+      ],
+      [
+        "sure !",
+        8.772157128538794
+      ],
+      [
+        "it is",
+        8.462072448927382
+      ]
+    ],
+    "human": [
+      [
+        ".",
+        -14.641762113725568
+      ],
+      [
+        "i",
+        -12.515855436680594
+      ],
+      [
+        "/",
+        -12.07745498888381
+      ],
+      [
+        "*",
+        -11.800299108688339
+      ],
+      [
+        ";",
+        -11.614034349305369
+      ],
+      [
+        ". .",
+        -9.601429833640914
+      ],
+      [
+        ")",
+        -9.11515873133196
+      ],
+      [
+        "url_0",
+        -8.991552909724168
+      ],
+      [
+        "only",
+        -8.145244316073015
+      ],
+      [
+        "(",
+        -8.127271749726683
+      ],
+      [
+        "you",
+        -8.12363644568778
+      ],
+      [
+        "etc",
+        -7.876129836691448
+      ],
+      [
+        "[",
+        -7.69288807459599
+      ],
+      [
+        "]",
+        -7.6918518542519925
+      ],
+      [
+        "basically",
+        -7.682200767278991
+      ],
+      [
+        "\" .",
+        -7.670716291165327
+      ],
+      [
+        ". also",
+        -7.131198299608932
+      ],
+      [
+        "all",
+        -7.065413396953944
+      ],
+      [
+        "can not",
+        -6.815679422992117
+      ],
+      [
+        "pretty",
+        -6.736023566695433
+      ]
+    ]
+  },
+  "style_permutation_importance": {
+    "mean_sentence_len": [
+      0.025897374950480567,
+      0.0007337801785825066
+    ],
+    "burstiness (sentence-len std)": [
+      0.01754984258042982,
+      0.0008158453415588502
+    ],
+    "MATTR (vocabulary richness)": [
+      0.0031152186151247596,
+      0.0003252091222371777
+    ],
+    "mean_word_len": [
+      0.0008812785388127465,
+      0.0002193594374731132
+    ],
+    "long_words_% (7+ letters)": [
+      0.002144867705010256,
+      0.0003841723587861838
+    ],
+    "exclamation !": [
+      0.0051023956965033255,
+      0.0002130704341613967
+    ],
+    "question ?": [
+      0.001522320218510864,
+      8.562912387199864e-05
+    ],
+    "ellipsis ...": [
+      0.003045203394424556,
+      0.00018108004462461628
+    ],
+    "brackets ( [": [
+      0.012487896415837852,
+      0.001118169835532823
+    ],
+    "quotes \"": [
+      0.0010605074956735016,
+      4.039831959208243e-05
+    ],
+    "commas ,": [
+      0.007858885344342292,
+      0.000688411257962938
+    ],
+    "connectives": [
+      0.005388023602510316,
+      0.0003498880838763227
+    ],
+    "first person I": [
+      0.006856466712537257,
+      0.0006195394228770851
+    ],
+    "second person you": [
+      0.0015471737453346846,
+      0.00011844525641773808
+    ],
+    "hedges": [
+      0.0023536415003856835,
+      0.00018817116121167823
+    ],
+    "informal/slang": [
+      0.0017494422551655787,
+      0.00015528505384666106
+    ],
+    "contractions": [
+      0.0008615333291632332,
+      0.0002374369407530679
+    ],
+    "function words %": [
+      0.0016998811534371105,
+      0.0001482092370814209
+    ],
+    "readability (Flesch)": [
+      0.0022225766768833254,
+      0.0002243298101381936
+    ],
+    "repeated bigrams %": [
+      0.10808780050457663,
+      0.003718396506733062
+    ]
+  },
+  "style_logreg_weights": {
+    "mean_sentence_len": 0.5199089102273986,
+    "burstiness (sentence-len std)": -0.338854992834886,
+    "MATTR (vocabulary richness)": 0.02977560137394994,
+    "mean_word_len": 0.20927430165295952,
+    "long_words_% (7+ letters)": 0.533532455726564,
+    "exclamation !": 0.11303064427643175,
+    "question ?": -0.028587063980809378,
+    "ellipsis ...": -2.898345112881275,
+    "brackets ( [": -2.5453572648218503,
+    "quotes \"": -0.001888074010393458,
+    "commas ,": 0.0915736244240901,
+    "connectives": 0.5837603660349904,
+    "first person I": -0.39103771001958115,
+    "second person you": -0.1929659226938508,
+    "hedges": -0.8646796395742729,
+    "informal/slang": -0.7288084907593719,
+    "contractions": -0.12415107602780812,
+    "function words %": 0.24194705901594707,
+    "readability (Flesch)": 0.31882056281096227,
+    "repeated bigrams %": 2.3799998750096836
+  },
+  "nn_history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.2630068896353119,
+      "val_loss": 0.17217709124088287,
+      "val_auc": 0.984113967598674
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.10081471244096143,
+      "val_loss": 0.14169317483901978,
+      "val_auc": 0.9880891766226725
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.053718774833462456,
+      "val_loss": 0.1439964920282364,
+      "val_auc": 0.9888361376952106
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.0278339268890173,
+      "val_loss": 0.17764537036418915,
+      "val_auc": 0.9877713141927815
+    }
+  ],
+  "nn_best_epoch": 2,
+  "train_f1": {
+    "length": 0.7746772618073339,
+    "tfidf": 0.9997146118721462,
+    "style_rf": 1.0,
+    "style_lr": 0.8858348540145985,
+    "nn": 0.9861838153265253
+  },
+  "val_f1": {
+    "length": 0.7796323684766533,
+    "tfidf": 0.9894688644688645,
+    "style_rf": 0.9311852704257767,
+    "style_lr": 0.8865979381443299,
+    "nn": 0.9487238445619682
+  },
+  "perplexity_median": {
+    "human": 38.942543029785156,
+    "chatgpt": 10.523032188415527
+  },
+  "calibration": {
+    "ppl": {
+      "column": "log_ppl",
+      "sign": -1.0,
+      "coef": 6.625304222106934,
+      "intercept": 19.154794692993164,
+      "raw_threshold": 2.891157002131094,
+      "perplexity_threshold": 18.014139947158156
+    },
+    "fdg": {
+      "column": "fast_detectgpt",
+      "sign": 1.0,
+      "coef": 2.9984686374664307,
+      "intercept": -6.5742597579956055,
+      "raw_threshold": 2.1925391100807228
+    },
+    "max_tokens": 128
+  }
+}

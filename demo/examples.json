@@ -1,0 +1,74 @@
+[
+  {
+    "title": "Human · Reddit ELI5",
+    "label": "Human",
+    "domain": "reddit_eli5",
+    "text": "If you're hearing about it, it's because it was a very good or very well-publicized book (or both), and almost every good or well-publicized book will be # 1 on the NY Times bestseller list for at least a little bit. Kindof like how almost every big or good movies are # 1 at the box office on their opening weekend."
+  },
+  {
+    "title": "ChatGPT · Reddit ELI5",
+    "label": "ChatGPT",
+    "domain": "reddit_eli5",
+    "text": "ACME is a fictional company that is used in Warner Brothers Cartoons. It is not a real company, so it cannot get mad or have feelings. The products in the cartoons are not real either, so they cannot work right or wrong. They are just used as a way to create humorous situations in the cartoons. The creators of the cartoons do not intend to make the ACME brand look bad or to make fun of real companies. They are just using the ACME name as a way to tell stories and make people laugh."
+  },
+  {
+    "title": "Human · Finance",
+    "label": "Human",
+    "domain": "finance",
+    "text": "This was called Financial repression by Edward S. Shaw and Ronald I. McKinnon from Stanford (https://en.wikipedia.org/wiki/Financial_repression). Financial repression is the situation, when government is stealing from people, who rely heavily on saving, rather then on spending. Meaning that your saving rates will be a lot worse then inflation rate. Financial markets are artificially hot and interest rates artificially low (average historical interest rate is 10%). This could be a possible predictor state to hyper-inflation."
+  },
+  {
+    "title": "ChatGPT · Finance",
+    "label": "ChatGPT",
+    "domain": "finance",
+    "text": "It is common for people to talk about the importance of saving money during times of economic uncertainty or downturn. This is because when the economy is struggling, people may feel more financially vulnerable and uncertain about the future. There may be concerns about job security, rising costs of living, or declining asset values. In such circumstances, it can be helpful to have a financial cushion in the form of savings to fall back on in case of unexpected expenses or income disruptions. By saving money, individuals and families can feel more prepared and financially secure in the face of economic challenges. Additionally, saving money can help to build financial resilience and stability over the long term, which can be beneficial in any economic environment."
+  },
+  {
+    "title": "Human · Medicine",
+    "label": "Human",
+    "domain": "medicine",
+    "text": "Hello,Thanks for the query to H.C.M. Forum. Pain is on the right side in lower abdominal region, so may be due to.1 Right renal colic, diagnosis can be confirmed by ultrasound of abdomen.2 Amoebic colitis, most possible reason in this age group. Diagnosis can be confirmed by physical examination.3 Appendicitis, a least possible cause in this age group, so need not to worry. In my opinion consult your physician and get his opinion. At least,if pain is bearable need not to visit E R.Good luck. Dr. HET"
+  },
+  {
+    "title": "ChatGPT · Medicine",
+    "label": "ChatGPT",
+    "domain": "medicine",
+    "text": "If you are experiencing abdominal pain and bloating, especially if it is severe or accompanied by other symptoms such as fever, vomiting, or diarrhea, it is important to seek medical attention as soon as possible. Appendicitis is a potentially serious condition that requires prompt treatment, and the symptoms you have described could be indicative of appendicitis or another serious condition. If you are unable to reach your doctor or do not have one, it is advisable to go to the nearest emergency department or urgent care center for evaluation and treatment. Do not hesitate to seek medical attention, especially if you are experiencing severe or worsening symptoms. It is better to be safe and get checked out by a medical professional rather than risk worsening your condition."
+  },
+  {
+    "title": "Human · Open QA",
+    "label": "Human",
+    "domain": "open_qa",
+    "text": "It was a wrenching national experience, conducted during a year of violence that included the assassination of civil rights leader Martin Luther King, Jr., and subsequent race riots across the nation, the assasination of Democratic presidential candidate Robert F. Kennedy, widespread opposition to the Vietnam War across university campuses, and violent confrontations between police and anti-war protesters at the 1968 Democratic National Convention as the Democratic party split again and again."
+  },
+  {
+    "title": "ChatGPT · Open QA",
+    "label": "ChatGPT",
+    "domain": "open_qa",
+    "text": "A lapping machine is a machine tool that is used to finish or polish the surface of a workpiece by abrasive action. It is a type of precision machining that produces a smooth, flat surface on a workpiece by using a fine abrasive material and a rotating disk or plate to rub the surface of the workpiece in a smooth, circular motion. Lapping machines are used in a variety of industries, including automotive, aerospace, defense, and medical device manufacturing, to produce parts with high levels of precision and surface finish. They can be used to lap a wide range of materials, including metals, ceramics, and plastics. Lapping machines are typically used for high-precision applications where tight tolerances and a smooth surface finish are required."
+  },
+  {
+    "title": "Human · Wikipedia CS/AI",
+    "label": "Human",
+    "domain": "wiki_csai",
+    "text": "An AI accelerator is a class of specialized hardware accelerator or computer system designed to accelerate artificial intelligence and machine learning applications, including artificial neural networks and machine vision. Typical applications include algorithms for robotics, internet of things, and other data-intensive or sensor-driven tasks. They are often manycore designs and generally focus on low-precision arithmetic, novel dataflow architectures or in-memory computing capability. As of 2018[update], a typical AI integrated circuit chip contains billions of MOSFET transistors. A number of vendor-specific terms exist for devices in this category, and it is an emerging technology without a dominant design."
+  },
+  {
+    "title": "ChatGPT · Wikipedia CS/AI",
+    "label": "ChatGPT",
+    "domain": "wiki_csai",
+    "text": "Lee Sedol is a South Korean professional Go player. Go is an ancient Chinese board game that is played on a grid of black and white lines. It is known for its complexity and the skill required to play it well. Lee Sedol began playing Go at the age of 5 and became a professional player at the age of 12. He has won numerous Go tournaments and is considered one of the best Go players in the world. In 2016, Lee Sedol made headlines when he played against the artificial intelligence program AlphaGo in a highly publicized five-game match. Despite being considered the favorite to win, Lee Sedol ultimately lost the match 4-1. However, his performance against AlphaGo was highly praised and he was praised for the graceful way in which he accepted defeat."
+  },
+  {
+    "title": "Hard case: human text that TF-IDF flags as ChatGPT",
+    "label": "Human",
+    "domain": "finance",
+    "text": "The exact percentages depend on many things, not just location. For example, everyone needs food. If you have a low income, the percentage of your income spent on food would be much higher than for someone that has a high income. Any budgeting guidelines that you find are just a starting point. You need to look at your own income and expenses and come up with your own spending plan. Start by listing all of the necessities that you have to spend on. For example, your basic necessities might be: Fund those categories, and any other fixed expenses that you have. Whatever you have left is available for other things, such as: and anything else that you can think of to spend money on. If you can save money on some of the necessities above, it will free up money on the discretionary categories below. Because your income and priorities are different than everyone else, your budget will be different than everyone else, too. If you are new to budgeting, you might find that the right budgeting software can make the task much easier. YNAB, EveryDollar, or Mvelopes are three popular choices."
+  },
+  {
+    "title": "Hard case: ChatGPT text that TF-IDF misses",
+    "label": "ChatGPT",
+    "domain": "finance",
+    "text": "Yes, Vanguard grants Admiral Shares on a per-account basis. Admiral Shares are a type of mutual fund share class offered by Vanguard that have a lower expense ratio than the standard mutual fund share class. To qualify for Admiral Shares, an account must meet certain minimum balance requirements. Once an account meets the requirements and is eligible for Admiral Shares, all investments in that account that are available in the Admiral Share class will automatically be invested in the Admiral Shares."
+  }
+]
