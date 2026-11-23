@@ -1,0 +1,22 @@
+{
+  "batch_id": "msgbatch_01JoqVevULeTc62JRoaW6QRp",
+  "n_requests": 7275,
+  "collected": 7274,
+  "problems": {
+    "train-paraphrase__open_qa_397": "errored"
+  },
+  "usage": {
+    "claude-sonnet-5-5": {
+      "input_tokens": 513503,
+      "output_tokens": 696852
+    },
+    "claude-haiku-5-5": {
+      "input_tokens": 1459592,
+      "output_tokens": 2008014
+    },
+    "claude-opus-5-5": {
+      "input_tokens": 57998,
+      "output_tokens": 482355
+    }
+  }
+}

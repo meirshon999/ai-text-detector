@@ -3,6 +3,8 @@
 Colour roles: human = blue, ChatGPT = orange (everywhere); model-comparison bars use one
 neutral hue (violet) so they are never confused with the two classes.
 """
+import textwrap
+
 import matplotlib
 
 matplotlib.use('Agg')
@@ -167,12 +169,12 @@ def grouped_bars(categories, series, path, title, ylabel, colors, ylim=(0, 100),
         for bar, v in zip(bars, values):
             ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + (ylim[1] - ylim[0]) * 0.012,
                     fmt.format(v), ha='center', va='bottom', fontsize=8, color=INK)
-    ax.set_xticks(x, categories)
+    ax.set_xticks(x, ['\n'.join(textwrap.wrap(str(c), 12)) for c in categories], fontsize=8.5)
     ax.set_ylim(*ylim)
     ax.set_ylabel(ylabel)
     ax.grid(axis='x', visible=False)
-    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.13), ncol=min(len(series), 4))
-    ax.set_title(title)
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.2), ncol=min(len(series), 4))
+    ax.set_title(title, pad=14)
     _save(fig, path)
 
 
@@ -235,4 +237,45 @@ def error_by_length(table, sizes, path):
     axes[1].legend(fontsize=8.5)
     fig.suptitle('Errors by text length on the test set: short ChatGPT answers are rare and often missed',
                  x=0.01, ha='left', fontsize=12, fontweight='bold', color=INK)
+    _save(fig, path)
+
+
+def rate_heatmap(values, rows, cols, path, title, subtitle=None, good_high=True, fmt='{:.0%}'):
+    """Detectors (rows) x text sources (cols); cell = a rate in [0, 1]. Blue = good for the detector."""
+    values = np.asarray(values, dtype=float)
+    fig, ax = plt.subplots(figsize=(1.15 * len(cols) + 2.6, 0.48 * len(rows) + 1.9))
+    blues = matplotlib.colors.LinearSegmentedColormap.from_list('b', [SURFACE] + BLUES[1:])
+    shown = values if good_high else 1 - values
+    ax.imshow(shown, cmap=blues, vmin=0, vmax=1, aspect='auto')
+    for i in range(values.shape[0]):
+        for j in range(values.shape[1]):
+            v = values[i, j]
+            if np.isnan(v):
+                ax.text(j, i, '–', ha='center', va='center', fontsize=8.5, color=MUTED)
+                continue
+            ax.text(j, i, fmt.format(v), ha='center', va='center', fontsize=8.5,
+                    color='white' if shown[i, j] > 0.6 else INK)
+    ax.set_xticks(range(len(cols)), cols, rotation=25, ha='right')
+    ax.set_yticks(range(len(rows)), rows)
+    ax.grid(False)
+    ax.set_title(title)
+    if subtitle:
+        import textwrap
+        ax.set_xlabel('\n'.join(textwrap.wrap(subtitle, 30 + 14 * len(cols))), fontsize=8, color=INK_2,
+                      labelpad=10)
+    _save(fig, path)
+
+
+def share_curves(shares, series, path, title, xlabel, ylabel, colors=SERIES):
+    """series: {label: [value per share]} -- e.g. P(machine) vs. share of machine-written text."""
+    fig, ax = plt.subplots(figsize=(7.6, 4.4))
+    for k, (label, values) in enumerate(series.items()):
+        ax.plot(np.array(shares) * 100, values, marker='o', ms=4, lw=1.8, color=colors[k % len(colors)], label=label)
+    ax.axhline(0.5, color=MUTED, lw=0.8, ls='--')
+    ax.set_xlim(-2, 102)
+    ax.set_ylim(0, 1)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.14), ncol=4)
+    ax.set_title(title)
     _save(fig, path)

@@ -231,6 +231,45 @@
 | Interestingly, the zero-shot GPT-2 detectors lose almost nothing, because they never learned topics. Among the models tested on all five domains, GPT-2 perplexity has the best average F1 on unseen domains, 0.947, while TF-IDF falls to 0.911. The ranking flips. Our transformer, trained without Reddit, goes from 0.995 to 0.980 on Reddit, so it transfers much better than TF-IDF. | Интересно, что zero-shot детекторы GPT-2 почти ничего не теряют, потому что не учили темы. Среди моделей, проверенных на всех пяти темах, у perplexity GPT-2 лучший средний F1 на незнакомых темах — 0.947, а TF-IDF падает до 0.911. Рейтинг переворачивается. Наш трансформер, обученный без Reddit, на Reddit даёт 0.980 вместо 0.995 — переносится заметно лучше TF-IDF. |
 | So a detector partly learns the topic and the source of the human answers, not only AI style. | Значит, детектор частично учит тему и источник ответов людей, а не только стиль ИИ. |
 
+### NEW after the defense: slides 11–15 of `reports/Final_Presentation.pptx` (~3 min + live demo)
+> Говорит Speaker 3 сразу после слайда «Where the detectors struggle». Числа: `reports/final/modern_results.json`,
+> `augmented_results.json`, `segments_results.json`.
+
+**Slide 11. 2026 models slip past a 2023 detector** — `modern_generators.png`
+| English | Русский |
+|---|---|
+| A score of 0.99 raised a question: does our detector still work on today's models? We took 555 test questions and generated new answers with Claude Haiku, Sonnet and Opus 5.5 and with two small open models. | F1 0.99 поставил вопрос: работает ли детектор на современных моделях? Мы взяли 555 тестовых вопросов и получили новые ответы от Claude Haiku, Sonnet и Opus 5.5 и двух малых открытых моделей. |
+| The same detector that catches 98% of ChatGPT 2023 answers catches only 10 to 21% of Claude answers. Small open models are caught much better. ROC-AUC is still 0.8–0.9, so the signal is there; the threshold learned on HC3 is what fails. | Тот же детектор, что ловит 98% ответов ChatGPT 2023, ловит только 10–21% ответов Claude. Малые открытые модели ловятся гораздо лучше. ROC-AUC всё ещё 0.8–0.9: сигнал есть, не работает порог, выученный на HC3. |
+
+**Slide 12. One rewrite hides AI text** — `modern_attacks.png`
+| English | Русский |
+|---|---|
+| Then we attacked. One request to "make it sound like a person on a forum" hides 93 to 99% of ChatGPT texts from every trained detector. Typos mainly hurt the GPT-2 detectors. | Потом мы атаковали. Одна просьба «перепиши как человек на форуме» прячет 93–99% текстов ChatGPT от всех обучаемых детекторов. Опечатки сильнее всего бьют по детекторам на GPT-2. |
+
+**Slide 13. One modern model in training helps on unseen ones** — `augmented_roberta_lora.png`
+| English | Русский |
+|---|---|
+| Can we fix it? We added texts of only one model, Claude Haiku, written for training questions only. On Sonnet and Opus, never seen in training, detection goes from 10 to 93 and from 12 to 94 percent; humanized texts from 7 to 94. | Можно ли это исправить? Мы добавили тексты только одной модели, Claude Haiku, и только к обучающим вопросам. На Sonnet и Opus, которых не было в обучении, детекция выросла с 10 до 93% и с 12 до 94%, «очеловеченные» тексты — с 7 до 94%. |
+| The price is honest: humans wrongly flagged rise from 2.3 to 4.5 percent, HC3 F1 drops from 0.990 to 0.980. | Цена честная: ложных обвинений людей стало 4.5% вместо 2.3%, F1 на HC3 — 0.980 вместо 0.990. |
+
+**Slide 14. Retraining also reveals where the AI part starts** — `segments_boundary.png`
+| English | Русский |
+|---|---|
+| Real texts are often mixed: a student writes the start and lets AI finish. On 1,082 mixed texts with a known boundary, detectors trained on HC3 find where Claude takes over no better than guessing, 52–54%. After retraining, 78% of boundaries are found within one sentence. The exact sentence is still hard: at most 42%. | Реальные тексты часто смешанные: студент пишет начало, ИИ дописывает. На 1 082 смешанных текстах с известной границей детекторы, обученные на HC3, находят начало части Claude не лучше угадывания — 52–54%. После дообучения 78% границ найдены с точностью до одного предложения. Точно в предложение пока трудно: максимум 42%. |
+
+**Slide 15. Which part did the AI write? → живое демо**
+| English | Русский |
+|---|---|
+| Here two sentences are from a real person, the rest is Claude. The old detector says 0% AI for the whole text, the retrained one 94%, and it puts the boundary exactly where the human part ends. Let me show it live. | Здесь два предложения написал человек, остальное — Claude. Старый детектор говорит 0% ИИ на весь текст, дообученный — 94%, и ставит границу ровно там, где кончается часть человека. Покажу вживую. |
+
+**Живое демо (вкладка «Live: fool the detector»):**
+1. Режим **Live (Claude API)**. Попросить комиссию задать любой вопрос → вписать → **Ask Claude**. Ответ печатается на глазах.
+2. Показать две карточки: «Trained on ChatGPT 2023» обычно говорит *Human*, «Retrained» — *AI*.
+3. Нажать **Humanize with Claude Sonnet 5.5** → ещё раз две карточки и таблица «Original → Humanized».
+4. Для смешанного текста: в поле «write the first sentences yourself» член комиссии пишет 1–2 предложения → Claude продолжает → цветная подсветка и метка «AI starts here?».
+5. **Если нет интернета или API не отвечает:** переключить на **Offline (saved texts)** → Author = «Mixed: human start + Claude Sonnet 5.5» → Show answer. Всё то же самое на сохранённых текстах.
+6. Одно живое срабатывание может отличаться от средних цифр — так и сказать: «one example can differ, the averages are on the slides».
+
 ### Slide 16. Live demo (~60–90 s)
 **Подготовка до защиты:** двойной щелчок по `Запустить демо.bat`. Браузер откроет `http://localhost:8501` через 10–20 секунд. Окно не закрывать. Один раз нажать любой пример → **Analyze**, чтобы всё «прогрелось»: первая загрузка GPT-2 и трансформера медленнее.
 

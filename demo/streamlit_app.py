@@ -235,7 +235,8 @@ st.markdown('<div class="hero-sub">Course project, AI Essentials (AITU, 2026). W
             'zero-shot language-model scores and a fine-tuned transformer for detecting ChatGPT answers, '
             'all trained and tested on the cleaned HC3 dataset.</div>', unsafe_allow_html=True)
 
-tab_analyze, tab_compare, tab_about = st.tabs(['Analyze a text', 'How the models compare', 'About the project'])
+tab_analyze, tab_live, tab_dashboard, tab_compare, tab_about = st.tabs(
+    ['Analyze a text', 'Live: fool the detector', 'Analytics dashboard', 'HC3 figures', 'About the project'])
 
 with tab_analyze:
     left, right = st.columns([5, 6], gap='large')
@@ -393,6 +394,16 @@ with tab_analyze:
                             'padding:0 4px">blue</span> towards human (top 10 words each way)</p>',
                             unsafe_allow_html=True)
                 st.markdown(f'<div class="card">{block}</div>', unsafe_allow_html=True)
+
+sys.path.insert(0, str(ROOT / 'demo'))
+
+with tab_live:
+    import live                            # noqa: E402
+    live.render()
+
+with tab_dashboard:
+    import analytics                       # noqa: E402
+    analytics.render()
 
 with tab_compare:
     if not results:

@@ -18,6 +18,9 @@ and measure how well it works on topics it has never seen.
 - **RQ1.** Which approach detects ChatGPT text best: classical ML, style features, zero-shot LLM scores or a fine-tuned transformer?
 - **RQ2.** How well do detectors generalise to a domain not seen during training?
 - **RQ3.** Do hidden artifacts of the dataset inflate detection scores?
+- **RQ4.** Do detectors trained on ChatGPT (2023) still work on 2026 models, on rewriting attacks and on mixed human/AI texts?
+- **RQ5.** Can adding texts of *one* modern model to training fix the detectors for *other, unseen* models?
+- **RQ6.** Can a detector show *which part* of a mixed human + AI text was machine-written?
 
 ## Key results
 
@@ -26,7 +29,7 @@ All detectors are evaluated on the **same test set of 4,380 texts** (balanced, s
 (rows marked "raw 0.5" show the transformers without calibration). ChatGPT = positive class; FPR = share of human texts wrongly flagged.
 
 | Model | Accuracy | Precision | Recall | F1 [95% CI] | ROC-AUC | FPR (humans flagged) | TPR @ 1% FPR |
-|---|---:|---:|---:|---:|---:|---:|---:|
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | DistilRoBERTa + LoRA | 0.990 | 0.990 | 0.990 | 0.990 [0.987–0.993] | 0.9996 | 0.011 | 0.990 |
 | TF-IDF + LogReg | 0.989 | 0.991 | 0.987 | 0.989 [0.986–0.992] | 0.9993 | 0.009 | 0.988 |
 | DistilRoBERTa full fine-tuning | 0.986 | 0.975 | 0.997 | 0.986 [0.982–0.989] | 0.9991 | 0.026 | 0.990 |
@@ -49,6 +52,50 @@ All detectors are evaluated on the **same test set of 4,380 texts** (balanced, s
    while zero-shot GPT-2 detectors lose almost nothing. On unseen domains GPT-2 perplexity (mean F1 0.947) beats TF-IDF (0.911).
 4. **Transformer:** DistilRoBERTa + LoRA (0.9% of the weights trained, 5,000 texts, laptop CPU) reaches F1 0.990 after calibration on validation, tied with TF-IDF, and the best ROC-AUC (0.9996). With the raw threshold 0.5 it flags 11.1% of humans. Full fine-tuning reached F1 0.986 after calibration, LoRA 0.990; their confidence intervals overlap, so LoRA, training 0.9% of the weights, is as good as full fine-tuning. For the transformer we could afford one such test: trained without Reddit, LoRA goes from 0.995 to 0.980 on Reddit, while TF-IDF goes from 0.992 to 0.866.
 
+### Extension: modern models, attacks, mixed texts (RQ4–RQ5)
+
+We took **555 test questions** (never used for training; 77–120 per domain) and collected new answers to them:
+Claude Haiku / Sonnet / Opus 5.5 (Anthropic Message Batches API, total cost **$9.51**), two small open models run
+locally (Qwen2.5-1.5B-Instruct, SmolLM2-1.7B-Instruct; 50 questions per domain), three attacks on the HC3 ChatGPT
+answers (paraphrase and "humanize" rewrites by Claude Sonnet 5.5, 5% character typos) and **905 mixed texts**
+(first part human, rest ChatGPT, machine share 0 / 25 / 50 / 75 / 100%). All detectors are used **exactly as saved**
+(same threshold 0.5 and calibration as on HC3). Detection rate = share of machine texts flagged; the human row is the
+false positive rate on the human answers to the same questions.
+
+| Detector | Humans flagged | ChatGPT (HC3) | Claude Haiku 5.5 | Claude Sonnet 5.5 | Claude Opus 5.5 | Qwen2.5-1.5B | SmolLM2-1.7B | Paraphrased | "Humanized" | 5% typos |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| DistilRoBERTa + LoRA | 2.3% | 97.8% | 21.1% | 9.7% | 11.9% | 73.6% | 96.8% | 74.6% | 7.0% | 83.2% |
+| TF-IDF + LogReg | 0.9% | 96.9% | 39.1% | 33.9% | 32.3% | 63.6% | 87.2% | 49.7% | 1.8% | 96.4% |
+| PyTorch bag-of-embeddings | 4.9% | 91.2% | 17.1% | 6.1% | 7.2% | 47.6% | 58.8% | 47.2% | 0.7% | 80.7% |
+| GPT-2 perplexity | 6.1% | 96.6% | 11.9% | 10.1% | 11.5% | 32.4% | 66.8% | 33% | 18% | 49.7% |
+| Fast-DetectGPT (GPT-2) | 3.6% | 93.2% | 11.0% | 10.1% | 6.8% | 18.0% | 46.4% | 20% | 18% | 48.5% |
+| Length baseline | 29.5% | 76.9% | 87.7% | 95.9% | 95.9% | 78.8% | 84.4% | — | — | — |
+
+5. **Detectors trained on 2023 ChatGPT miss most 2026 texts.** Small open models (Qwen, SmolLM) write closer to
+   2023 ChatGPT and are caught much better (LoRA 74% / 97%), the large Claude models are not. The best HC3 model (DistilRoBERTa + LoRA) catches
+   only 10–21% of Claude 5.5 answers; one "humanize" rewrite hides 93–99% of ChatGPT texts from every trained model.
+   ROC-AUC on Claude stays at 0.77–0.92 for the trained models, so the scores still carry signal: a large part of the
+   failure is the **threshold/calibration**, not a total loss of signal.
+6. **The length baseline "wins" on Claude only by accident:** Claude answers are 2–3.5× longer than human ones
+   (259–411 vs 116 words), and it still flags 29.5% of humans. It is a confound, not a detector.
+7. **Mixed texts:** the GPT-2 detectors read only the first 128 tokens, so they barely react until half of the text is
+   machine-written and flag under 50% of texts even at 75% machine share; trained models rise roughly linearly and cross 0.5 between 50% and 75% machine share.
+8. **Fix (RQ5):** retraining with 4,499 Claude **Haiku** texts (train questions only, balanced with 4,499 extra human
+   answers) makes the detectors work on models they never saw: DistilRoBERTa + LoRA Sonnet 9.7% → 93%, Opus 11.9% → 94%,
+   "humanized" 7.0% → 94%, Qwen 74% → 89%; TF-IDF Sonnet 34% → 98%, Opus 32% → 98%, Qwen 64% → 80%. The price is paid on humans and on HC3:
+   FPR 2.3% → 4.5% (LoRA) and 0.9% → 4.0% (TF-IDF); HC3 test F1 0.990 → 0.980 (LoRA) and 0.989 → 0.984 (TF-IDF).
+   Caveats: the *rewrite types* (paraphrase, humanize) were seen in training through Haiku, only the rewriting model
+   (Sonnet) was new; and the retrained LoRA became worse on typos (83% → 70%).
+
+9. **Where does the AI part start? (RQ6)** On 1,082 mixed texts (human start, machine end) every sentence split is
+   scored by a whole-text detector. With a ChatGPT continuation the boundary is found within one sentence in 82–89% of
+   texts (guessing the middle: 59%). With a Claude Sonnet 5.5 continuation the HC3 detectors are at guessing level
+   (52–54% vs 53%), the retrained ones reach 78% (TF-IDF) and 69% (LoRA). The exact sentence is found in at most 42%.
+   The demo tab *Live: fool the detector* shows this split on any text.
+
+Figures: `reports/final/figures/modern_*.png`, `augmented_*.png`, `segments_boundary.png` · numbers: `reports/final/modern_results.json`,
+`reports/final/augmented_results.json`, `reports/final/segments_results.json` · all of it interactive in the demo tab **Analytics dashboard**.
+
 Full tables: [`reports/final/results_table.md`](reports/final/results_table.md) · all numbers: `reports/final/results.json` ·
 figures: [`reports/final/figures/`](reports/final/figures/).
 
@@ -63,7 +110,10 @@ pip install -r requirements.txt
 python scripts/download_models.py    # GPT-2 + DistilRoBERTa from Hugging Face, ~0.8 GB, once
 ```
 
-**Run the demo** (uses the trained models in `models/`):
+**Run the demo** (uses the trained models in `models/`). Tabs: *Analyze a text*; *Live: fool the detector*
+(a Claude 5.5 model answers any question, the HC3 detector and the retrained detector judge it, the text is split into
+its human and AI parts, one click "humanizes" it; needs `ANTHROPIC_API_KEY` in `.env`, otherwise it uses the saved
+texts offline); *Analytics dashboard* (all results, interactive); *HC3 figures*; *About*.
 
 - Windows: double-click **`Запустить демо.bat`** — the browser opens `http://localhost:8501` by itself.
 - Any OS:
@@ -94,6 +144,12 @@ Every script finds the project folder by itself, so it can be started from any d
 | 3b. LoRA generalisation test: train without Reddit, test on Reddit (optional) | `python scripts/train_transformer.py --mode lora --holdout reddit_eli5` | ~30 min | `reports/final/cache/transformer_lora_lodo_*` |
 | 4. All other models, evaluation, figures | `python scripts/run_experiments.py` | ~30 min | `reports/final/`, `models/` |
 | 4b. Only rebuild report + figures from cache | `python scripts/run_experiments.py --reuse` | 1 min | same |
+| 5. Claude 5.5 texts (needs `ANTHROPIC_API_KEY` in `.env`, ~$10) | `python scripts/generate_claude.py estimate` → `submit` → `status` → `collect` | ~1 h (batch) | `reports/final/modern/raw/claude.jsonl` |
+| 6. Open-model texts (local, CPU) | `python scripts/generate_open_models.py` | several hours | `reports/final/modern/raw/*.jsonl` |
+| 7. Score all detectors on modern texts, attacks, mixed texts | `python scripts/evaluate_modern.py` | ~30 min | `reports/final/modern_results.json`, `figures/modern_*.png` |
+| 8. LoRA retrained with Claude Haiku texts (optional) | `python scripts/train_transformer.py --mode lora --augment 1500` | ~1.5 h | `models/distilroberta_lora_augmented/` |
+| 9. Retrain with Claude Haiku texts, before/after | `python scripts/train_augmented.py` | ~15 min | `reports/final/augmented_results.json`, `models/augmented/` |
+| 10. Where does the AI part start? (sentence-level boundary) | `python scripts/evaluate_segments.py` | ~45 min | `reports/final/segments_results.json`, `figures/segments_boundary.png` |
 | Smoke test of the whole pipeline | `python scripts/run_experiments.py --quick` | 2 min | `reports/final/quick/` |
 
 Random seed 42 everywhere. The rebuilt split is **identical** to the one used at the midterm
@@ -117,14 +173,24 @@ ai-text-detector/
 │   ├── models.py                 length baseline, TF-IDF+LogReg, stylometry, PyTorch network
 │   ├── lm_scores.py              GPT-2 perplexity and Fast-DetectGPT
 │   ├── evaluation.py             metrics, bootstrap confidence intervals
+│   ├── inference.py              batch scoring with every saved detector
+│   ├── modern.py                 modern-model experiment: questions, prompts, attacks, mixed texts
+│   ├── segments.py               which part of a text is AI: sentence splits and the human -> AI boundary
 │   └── plots.py                  all figures in one style
 ├── scripts/
 │   ├── download_data.py
 │   ├── compute_lm_scores.py
 │   ├── train_transformer.py
-│   └── run_experiments.py        ← single entry point for the experiments
+│   ├── run_experiments.py        ← single entry point for the HC3 experiments
+│   ├── generate_claude.py        Claude 5.5 answers + rewrites (Message Batches API)
+│   ├── generate_open_models.py   Qwen2.5 / SmolLM2 answers, local
+│   ├── evaluate_modern.py        RQ4: modern models, attacks, mixed texts
+│   ├── train_augmented.py        RQ5: retraining with one modern generator
+│   └── evaluate_segments.py      RQ6: locating the AI part inside a mixed text
 ├── demo/
 │   ├── streamlit_app.py          ← the final demo
+│   ├── analytics.py              interactive Analytics dashboard tab
+│   ├── live.py                   "Live: fool the detector" tab (Claude API or saved texts offline)
 │   └── examples.json             example texts from the TEST set
 ├── models/                       trained detectors used by the demo
 ├── reports/

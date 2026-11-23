@@ -215,3 +215,33 @@ Not as evidence against a student. At most as a hint for a human reviewer, with 
 
 **Q49. What did you learn from this project?**
 That a benchmark score can be misleading. The most valuable part of our work was not the 0.99 F1 but finding why it is so high, and showing where the detectors fail.
+
+---
+
+## 10. After the defense: modern models (RQ4–RQ5)
+
+**Q50. Does your detector work on today's models, not only on ChatGPT 2023?**
+Mostly no, and we measured it. On 555 unseen test questions, DistilRoBERTa + LoRA catches 97.8% of HC3 ChatGPT answers but only 21% of Claude Haiku 5.5, 10% of Sonnet 5.5 and 12% of Opus 5.5 answers. ROC-AUC is still 0.80–0.88, so the score keeps signal; the HC3 threshold is what fails. Small open models (Qwen2.5-1.5B, SmolLM2-1.7B) are much easier: 74% and 97%.
+*Простыми словами:* модель «узнаёт» ChatGPT 2023 года, а новый стиль Claude — нет.
+
+**Q51. What about paraphrasing and "humanizing"?**
+One "humanize" rewrite by Claude Sonnet hides 93–99% of ChatGPT texts from every trained detector. Plain paraphrasing is weaker: LoRA still catches 75%. 5% typos hurt GPT-2 perplexity most (97% → 50%), TF-IDF almost not at all.
+
+**Q52. Can it find AI text inside a human text?**
+Only when the machine part is large. Trained models cross 50% flagged between 50% and 75% machine share. GPT-2 detectors read only the first 128 tokens, so they barely react until the machine part reaches the beginning of the text.
+
+**Q53. Why does the length baseline look best on Claude?**
+Claude answers are 259–411 words, humans 116. Length "detects" Claude by accident and still flags 29.5% of humans. It is a confound, which is why we exclude it when we name the best detector.
+
+**Q54. Can you fix it?**
+Partly. We added 4,499 texts of one model (Claude Haiku) for training questions only, balanced with extra human answers. On models never seen in training, LoRA goes from 10% to 93% on Sonnet and from 12% to 94% on Opus. The cost: humans wrongly flagged 2.3% → 4.5%, HC3 F1 0.990 → 0.980. Caveat: the rewrite types were already seen through Haiku, only the rewriting model was new.
+
+**Q55. How much did the new data cost and is it reproducible?**
+$9.51 for 7,274 Claude texts via the Message Batches API (50% cheaper); open models run locally. Prompts and all scripts are in the repository (`scripts/generate_claude.py`, `generate_open_models.py`, `evaluate_modern.py`, `train_augmented.py`), raw outputs are saved in `reports/final/modern/raw/`.
+
+**Q56. Can your tool show which part of a text was written by AI?**
+Partly. We built 1,082 mixed texts where a human answer is continued by a machine and the boundary is known. For every possible boundary the detector scores the part before and the part after it. With ChatGPT continuations the boundary is found within one sentence in 82–89% of texts; with Claude Sonnet continuations the HC3 detectors are at guessing level (52–54%), the retrained ones reach 78%. The exact sentence is found in at most 42% of texts, so it is a hint, not a proof.
+*Простыми словами:* после дообучения детектор неплохо показывает, где «примерно» начинается ИИ, но точное предложение угадывает реже чем в половине случаев.
+
+**Q57. What happens in the live demo if the model output is different from your averages?**
+One example can differ from the averages; that is why the slides show results on hundreds of texts with confidence intervals. The live demo shows the mechanism, the numbers come from the evaluation. Without internet the same tab uses the saved texts from the experiments.
