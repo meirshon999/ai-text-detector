@@ -46,6 +46,9 @@ def parse_args():
     parser.add_argument('--threads', type=int, default=8, help='CPU threads for PyTorch')
     parser.add_argument('--holdout', choices=['finance', 'medicine', 'open_qa', 'reddit_eli5', 'wiki_csai'],
                         help='generalisation test: train without this domain, test only on its test texts')
+    parser.add_argument('--augment', type=int, default=0, metavar='N',
+                        help='add N Claude Haiku 5.5 texts of TRAIN questions + N extra human answers '
+                             '(see scripts/train_augmented.py); saves models/distilroberta_lora_augmented/')
     parser.add_argument('--quick', action='store_true', help='tiny run to check that everything works')
     return parser.parse_args()
 
@@ -144,7 +147,8 @@ def train_one(mode, train, val, test, args, tokenizer):
 
     scores = (val.assign(p_chatgpt=val_prob), test.assign(p_chatgpt=test_prob))
     scores = __import__('pandas').concat(scores)[['qid', 'label', 'split', 'domain', 'y', 'p_chatgpt']]
-    suffix = '_quick' if args.quick else (f'_lodo_{args.holdout}' if args.holdout else '')
+    suffix = '_quick' if args.quick else (f'_lodo_{args.holdout}' if args.holdout else
+                                          ('_augmented' if args.augment else ''))
     scores.to_parquet(CACHE / f'transformer_{mode}{suffix}_scores.parquet', index=False)
     info = {'mode': mode, 'base_model': TRANSFORMER_NAME, 'trainable_params': trainable, 'total_params': total,
             'learning_rate': lr, 'epochs': args.epochs, 'batch_size': args.batch_size,
@@ -154,8 +158,9 @@ def train_one(mode, train, val, test, args, tokenizer):
     if mode == 'lora':
         info['lora'] = {'r': 8, 'alpha': 16, 'dropout': 0.1, 'target_modules': ['query', 'value']}
         if not args.quick and not args.holdout:
-            model.save_pretrained(MODELS / 'distilroberta_lora')
-            tokenizer.save_pretrained(MODELS / 'distilroberta_lora')
+            folder = MODELS / ('distilroberta_lora_augmented' if args.augment else 'distilroberta_lora')
+            model.save_pretrained(folder)
+            tokenizer.save_pretrained(folder)
     (CACHE / f'transformer_{mode}{suffix}_info.json').write_text(json.dumps(info, indent=2))
     return info
 
@@ -175,6 +180,12 @@ def main():
         test = test[test.domain == args.holdout].reset_index(drop=True)
     train = sample_questions(train, args.train_questions, SEED)
     val = sample_questions(val, args.val_questions, SEED)
+    if args.augment:
+        import pandas as pd
+        from train_augmented import augmentation_texts
+        extra = augmentation_texts(data.split_frames(data.load_pairs())[0])
+        extra = pd.concat([g.sample(min(args.augment, len(g)), random_state=SEED) for _, g in extra.groupby('y')])
+        train = pd.concat([train, extra], ignore_index=True)
     print(f'train {len(train)} texts, validation {len(val)}, test {len(test)}; '
           f'torch threads: {torch.get_num_threads()}')
     for mode in (['lora', 'full'] if args.mode == 'both' else [args.mode]):   # LoRA first: the demo uses it

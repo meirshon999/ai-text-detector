@@ -7,3 +7,6 @@ reports/final/cache/*.log
 # Python / Jupyter
 __pycache__/
 .ipynb_checkpoints/
+
+# secrets (Anthropic API key for scripts/generate_claude.py)
+.env
